@@ -1,0 +1,122 @@
+# Translation of Plugins - My auctions allegro FREE EDITION - Development Readme (trunk) in Polish
+# This file is distributed under the same license as the Plugins - My auctions allegro FREE EDITION - Development Readme (trunk) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: +0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: pl\n"
+"Project-Id-Version: Plugins - My auctions allegro FREE EDITION - Development Readme (trunk)\n"
+
+#. Name.
+msgid "My auctions allegro FREE EDITION"
+msgstr "Moje aukcje allegro"
+
+#. Screenshot description.
+msgid "assets/screenshot-1.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-2.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-3.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-4.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-5.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-6.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-7.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-8.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-9.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-10.png"
+msgstr ""
+
+#. Screenshot description.
+msgid "assets/screenshot-11.png"
+msgstr ""
+
+#. Found in remaining content list item.
+msgid "Then you can see how it looks on front of your WordPress."
+msgstr "Wtedy, możesz sobie zobaczyć jak to wygląda na stronie Twojego WordPress'a"
+
+#. Found in remaining content list item.
+msgid "Also you can create a shortcode. Choose allegro icon from icons, and set-up your shortcode."
+msgstr "Dodatkowo możesz użyć \"shortcode\" na swojej stronie, wybierając ikonę allegro na pasku narzędzi edytora i go dodać do swojej strony"
+
+#. Found in remaining content list item.
+msgid "After import you can create a widget where you will show auctions"
+msgstr "Po zaimportowaniu aukcji, możesz stworzyć swój pierwszy widżet, gdzie będziesz mógł zobaczyć swoje aukcje"
+
+#. Found in remaining content list item.
+msgid "Choose your profile and click send"
+msgstr "Wybierz profil i kliknij \"Wyślij\""
+
+#. Found in remaining content list item.
+msgid "GO to My auctions allegro - Import"
+msgstr "Przejdź do \"Moje aukcje allegro\" - \"Importuj aukcję\""
+
+#. Found in remaining content list item.
+msgid "Add a new one and set your configuration of imported auctions"
+msgstr "Dodaj nowe ustawienie Twoje profilu importowanych aukcji"
+
+#. Found in remaining content list item.
+msgid "Go to My auctions allegro - auction settings"
+msgstr "Przejdź do Moje aukcje allegro - ustawienia aukcji"
+
+#. Found in remaining content list item.
+msgid "You can fill all  fields but only Web API Key is optional"
+msgstr "Możesz wypełnić wszystkie pola, ale tylko Web API Key jest opcjonalne"
+
+#. Found in remaining content list item.
+msgid "Go to My auctions allegro and configure connection with allegro API"
+msgstr "Przejdź do \"Moje aukcje allegro\" i skonfiguruj połączenie z Allegro API"
+
+#. Found in remaining content list item.
+msgid "Enable plug-in in your panel administration"
+msgstr "Włącz wtyczkę w panelu administracyjnym WordPress"
+
+#. Found in remaining content list item.
+msgid "Upload plug-in to wp-content/plugins"
+msgstr "Wyślij wtyczkę do wp-content/plugins"
+
+#. Found in remaining content header.
+msgid "Support"
+msgstr "Wsparcie"
+
+#. Found in faq paragraph.
+msgid ""
+"Q: How to import auctions from allegro\n"
+"A: First, we need to add allegro profile to your plug-in. Go to My auctions allegro -&gt; Auction settings. Click add, set your profile and click save. Then you can go to import auctions and choose your added profile and click \"Send\" to import your auctions."
+msgstr "P: Jak zaimportować aukcje z allegro? O: Najpierw należy dodać ustawienia aukcji do importu. Przejdź do \"Moje aukcje allegro\" - \"Ustawienia aukcji\" dodaj nowy i ustaw swój profil. Następnie możesz przejść do \"Moje aukcje allegro\" - \"Importuj aukcje\" wybierz profil i naciśnij \"Wyślij\", aby zaimportować aukcje."
+
+#. Found in description paragraph.
+msgid "Plug-in display auctions from popular polish auction website called allegro.pl"
+msgstr "Wtyczka służy do wyświetlania na stronie aukcji z popularnego serwisu internetowego zwanego allegro.pl "
+
+#. Found in change log paragraph, changelog paragraph.
+msgid "Changelog is preferred."
+msgstr ""

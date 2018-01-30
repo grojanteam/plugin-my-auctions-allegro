@@ -1,0 +1,4 @@
+table.import tr th {
+    text-align: right;
+    font-weight: bold;
+}
