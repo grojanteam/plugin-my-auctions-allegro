@@ -6,18 +6,26 @@ class GjmaaWPSettingsTable extends WP_List_Table {
 	public $per_page = 20;
 	
 	public function get_columns(){
-		return array(
-			'id' => __('ID','gj_myauctions_allegro'),
-			'site' => __('Site','gj_myauctions_allegro'),
-			'type_of_auctions' => __('Type of auctions','gj_myauctions_allegro'),
-			'user_allegro' => __('User allegro','gj_myauctions_allegro'),
-			'category' => __('Category','gj_myauctions_allegro'),
-			'sort' => __('Sort','gj_myauctions_allegro'),
-			'count_of_auctions' => __('Count of auctions','gj_myauctions_allegro'),
-			'show_price'=>__('Show price','gj_myauctions_allegro'),
-			'show_time'=>__('Show time','gj_myauctions_allegro'),
-			'action'=>__('Action','gj_myauctions_allegro')
-		);
+	    $columns = array(
+            'id' => __('ID','my-auctions-allegro-free-edition'),
+            'site' => __('Site','my-auctions-allegro-free-edition'),
+            'type_of_auctions' => __('Type of auctions','my-auctions-allegro-free-edition'),
+            'user_allegro' => __('User allegro','my-auctions-allegro-free-edition'),
+            'category' => __('Category','my-auctions-allegro-free-edition'),
+            'sort' => __('Sort','my-auctions-allegro-free-edition'),
+            'count_of_auctions' => __('Count of auctions','my-auctions-allegro-free-edition'),
+            'show_price'=>__('Show price','my-auctions-allegro-free-edition'),
+            'show_time'=>__('Show time','my-auctions-allegro-free-edition')
+        );
+
+	    $wooCommerceService = new GjmaaServiceWoocommerce();
+	    if($wooCommerceService->isEnabled()){
+            $columns['woocommerce'] = __('WooCommerce','my-auctions-allegro-free-edition');
+        }
+
+        $columns['action'] = __('Action','my-auctions-allegro-free-edition');
+
+		return $columns;
 	}
 	
 	function prepare_items() {
@@ -36,9 +44,8 @@ class GjmaaWPSettingsTable extends WP_List_Table {
 		$auctions_result = array();
 		$modelAuctions = new GjmaaMyAuctionsAllegro();
 		$auctions = $modelAuctions->getAll();
-        $gjSettingsModel = new GjmaaSettings();
         $gjCategory = new GjmaaAuctionCategory();
-        $gjSettings = $gjSettingsModel->getSettings();
+        $wooCommerceService = new GjmaaServiceWoocommerce();
 		$columns = $this->get_columns();
 		if(count($auctions) > 0):
 			foreach($auctions as $auction):
@@ -55,7 +62,8 @@ class GjmaaWPSettingsTable extends WP_List_Table {
 						case 'count_of_auctions': $value = $auction['count_of_auctions']; break;
 						case 'show_price': $value = $modelAuctions->booleanFields($auction['show_price']); break;
 						case 'show_time': $value = $modelAuctions->booleanFields($auction['show_time']); break;
-						case 'action' : $value = '<a href="'.admin_url('admin.php?page=gjmaa_auction_settings&action=edit&sid='.$auction['id']).'" title="'.__('Edit').'">'.__('Edit').'</a>' . ' | ' . '<a href="'.admin_url('admin.php?page=gjmaa_auction_settings&action=delete&sid='.$auction['id']).'" title="'.__('Delete').'">'.__('Delete').'</a>'; break;
+                        case 'woocommerce': $value = $wooCommerceService->isEnabled() ? $modelAuctions->booleanFields($auction['to_woocommerce'] ? : false) : null; break;
+						case 'action' : $value = '<a href="'.admin_url('admin.php?page=gjmaa_auction_settings&action=edit&sid='.$auction['id']).'" title="'.__('Edit', 'my-auctions-allegro-free-edition').'">'.__('Edit', 'my-auctions-allegro-free-edition').'</a>' . ' | ' . '<a href="'.admin_url('admin.php?page=gjmaa_auction_settings&action=delete&sid='.$auction['id']).'" title="'.__('Delete', 'my-auctions-allegro-free-edition').'">'.__('Delete', 'my-auctions-allegro-free-edition').'</a>'; break;
 						default:
 							$value = '';
 							break;
@@ -69,12 +77,12 @@ class GjmaaWPSettingsTable extends WP_List_Table {
 	
 	public function get_auction_columns(){
 		return array(
-			'auction_id' => __('ID','gj_myauctions_allegro'),
-			'auction_image' => __('','gj_myauctions_allegro'),
-			'auction_name' => __('Name','gj_myauctions_allegro'),
-			'auction_price' => __('Price','gj_myauctions_allegro'),
-			'auction_end' => __('End auction','gj_myauctions_allegro'),
-			'auction_user' => __('User','gj_myauctions_allegro')
+			'auction_id' => __('ID','my-auctions-allegro-free-edition'),
+			'auction_image' => __('','my-auctions-allegro-free-edition'),
+			'auction_name' => __('Name','my-auctions-allegro-free-edition'),
+			'auction_price' => __('Price','my-auctions-allegro-free-edition'),
+			'auction_end' => __('End auction','my-auctions-allegro-free-edition'),
+			'auction_user' => __('User','my-auctions-allegro-free-edition')
 		);
 	}
 	

@@ -9,5 +9,6 @@ require_once 'fields/fields_form.php';
 require_once 'fields/fields_import_form.php';
 require_once 'service/auctions.php';
 require_once 'service/cron.php';
+require_once 'service/woocommerce.php';
 require_once 'tables/settings.php';
 require_once 'widget/auctions.php';

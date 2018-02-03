@@ -6,10 +6,11 @@ class GjmaaServiceAuctions
 
     protected $_apiSettings = null;
 
+    protected $_settingsData;
+
     public function importAuctions($request)
     {
         $modelAuctions = new GjmaaMyAuctionsAllegro();
-
         $allegroSettingsId = isset($request['settings_of_auctions']) ? $request['settings_of_auctions'] : $request['allegro_setting_id'];
         $prepareFiltersForRequest = $this->getFiltersForRequest($allegroSettingsId);
 
@@ -28,7 +29,6 @@ class GjmaaServiceAuctions
         if ($response['all_auctions'] === 0) {
             $modelAuctions->removeAuctionsBySettings($allegroSettingsId);
         }
-
         $auctions = $this->doRequestToAllegro($prepareFiltersForRequest['filters'], $prepareFiltersForRequest['sort'], $result);
         $response = $this->checkLimitAndSave($response);
 
@@ -39,10 +39,24 @@ class GjmaaServiceAuctions
 
         $userId = isset($prepareFiltersForRequest['filters']['userId']) ? $prepareFiltersForRequest['filters']['userId'] : $allegroUserId;
 
+        $settingData = $this->getSettingsData($allegroSettingsId);
+
         if ($auctions->itemsCount > 0) {
-            $result = $modelAuctions->saveAuctions($auctions->itemsList->item, $this->connectApiAllegro(), $allegroSettingsId,$userId);
+            $result = $modelAuctions->saveAuctions($auctions->itemsList->item, $this->connectApiAllegro(), $allegroSettingsId, $userId);
             foreach ($result as $index_result => $item_result) {
                 $response[$index_result] = $item_result;
+            }
+
+            $settingData['to_woocommerce'] = isset($settingData['to_woocommerce']) ? ($settingData['to_woocommerce'] ? true : false) : false;
+            if($settingData['to_woocommerce']){
+                $auctionIds = $this->getAuctionsBySettingId($response['allegro_setting_id'], $response['limit'], $response['limit'] * (intval($response['start'])));
+                $api_allegro = $this->connectApiAllegro();
+                $auctionDetails = $api_allegro->getItemAuction($auctionIds);
+                if(!is_array($auctionDetails->arrayItemListInfo->item)){
+                    $auctionDetails->arrayItemListInfo->item = [$auctionDetails->arrayItemListInfo->item];
+                }
+                $wooCommerceService = new GjmaaServiceWoocommerce();
+                $wooCommerceService->saveProducts($auctionDetails->arrayItemListInfo->item);
             }
         }
 
@@ -52,16 +66,25 @@ class GjmaaServiceAuctions
     public function checkLimitAndSave($response)
     {
         $response['end'] = true;
-        $response['message'] = __('No auctions to import', 'gj_myauctions_allegro');
+        $response['message'] = __('No auctions to import', 'my-auctions-allegro-free-edition');
 
         return $response;
     }
 
-    public function getFiltersForRequest($auctionSettingsId)
+    public function getSettingsData($allegroSettingsId){
+        if(!isset($this->_settingsData[$allegroSettingsId])){
+            /** @var $modelAuctions GjmaaMyAuctionsAllegro */
+            $modelAuctions = new GjmaaMyAuctionsAllegro();
+            $this->_settingsData[$allegroSettingsId] = $modelAuctions->getById($allegroSettingsId);
+        }
+
+        return $this->_settingsData[$allegroSettingsId];
+    }
+
+    public function getFiltersForRequest($allegroSettingsId)
     {
         /** @var $modelAuctions GjmaaMyAuctionsAllegro */
-        $modelAuctions = new GjmaaMyAuctionsAllegro();
-        $settingData = $modelAuctions->getById($auctionSettingsId);
+        $settingData = $this->getSettingsData($allegroSettingsId);
 
         $apiSettings = $this->getApiSettings();
         $type_of_auctions = $settingData['type_of_auctions'];
@@ -70,6 +93,7 @@ class GjmaaServiceAuctions
         if($settingData['item_' . $type_of_auctions . '_category']) {
             $filters['category'] = $settingData['item_' . $type_of_auctions . '_category'];
         }
+
         $username = $type_of_auctions == 'my_auctions' ? $apiSettings['allegro_username'] : $settingData['item_' . $type_of_auctions . '_user'];
         if($username) {
             $filters['userId'] = $this->getAllegroUserId($username);
@@ -81,13 +105,20 @@ class GjmaaServiceAuctions
 
         $sorting_exploded = explode('_', $settingData['item_' . $type_of_auctions . '_sort']);
         $sort = array();
-        $sort['sortType'] = $sorting_exploded[0];
-        $sort['sortOrder'] = $sorting_exploded[1];
+        $sort['sortType'] = isset($sorting_exploded[0]) ? $sorting_exploded[0] : null;
+        $sort['sortOrder'] = isset($sorting_exploded[1]) ? $sorting_exploded[1] : null;
 
         return [
             'filters' => $filters,
             'sort' => $sort
         ];
+    }
+
+    public function getAuctionsBySettingId($settingId, $limit, $offset){
+        /** @var $itemAuctionsModel GjmaaAuctionsItem */
+        $itemAuctionsModel = new GjmaaAuctionsItem();
+
+        return $itemAuctionsModel->getIdsAuctionsBySettingsId($settingId, $limit, $offset);
     }
 
     public function getAllegroUserId($username)
@@ -113,7 +144,7 @@ class GjmaaServiceAuctions
         $response['limit'] = 10;
         $response['end'] = $response['all_auctions'] <= ($response['limit'] * (intval($response['start']) + 1)) ? true : false;
 
-        $auctionIds = $itemAuctionsModel->getIdsAuctionsBySettingsId($response['allegro_setting_id'], $response['limit'], $response['limit'] * (intval($response['start'])));
+        $auctionIds = $this->getAuctionsBySettingId($response['allegro_setting_id'], $response['limit'], $response['limit'] * (intval($response['start'])));
 
         /** @var $api_allegro GjmaaAllegroWebApi */
         $api_allegro = $this->connectApiAllegro();

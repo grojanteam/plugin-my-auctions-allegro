@@ -1,0 +1,337 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-02 17:09+0100\n"
+"PO-Revision-Date: 2018-02-02 17:13+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 2.0.6\n"
+"Last-Translator: \n"
+"Language: pl_PL\n"
+
+#: gj_myauctions_allegro.php:85 gj_myauctions_allegro.php:332
+msgid "My auctions allegro"
+msgstr "Moje aukcje allegro"
+
+#: gj_myauctions_allegro.php:87 gj_myauctions_allegro.php:328
+#: gj_myauctions_allegro.php:412 model/widget/auctions.php:34
+msgid "Settings of auctions"
+msgstr "Ustawienia aukcji"
+
+#: gj_myauctions_allegro.php:88 gj_myauctions_allegro.php:277
+#: gj_myauctions_allegro.php:335
+msgid "Import auctions"
+msgstr "Importuj aukcje"
+
+#: gj_myauctions_allegro.php:89
+msgid "Plugin settings"
+msgstr "Ustawienia wtyczki"
+
+#: gj_myauctions_allegro.php:147 gj_myauctions_allegro.php:235
+msgid "Settings was updated"
+msgstr "Ustawienia zostały zaktualizowane"
+
+#: gj_myauctions_allegro.php:149 gj_myauctions_allegro.php:237
+msgid "Settings was not updated"
+msgstr "Ustawienia nie zostały zaktualizowane"
+
+#: gj_myauctions_allegro.php:254
+msgid "Settings was deleted"
+msgstr "Ustawienia zostały usunięte"
+
+#: gj_myauctions_allegro.php:256
+msgid "Settings was not deleted"
+msgstr "Ustawienia nie zostały usunięte"
+
+#: gj_myauctions_allegro.php:260 gj_myauctions_allegro.php:436
+msgid "Add"
+msgstr "Dodaj"
+
+#: gj_myauctions_allegro.php:297
+msgid "Get Full Version"
+msgstr "Kup pełną wersję"
+
+#: gj_myauctions_allegro.php:304
+#, php-format
+msgid "Something went wrong! %s"
+msgstr "Coś poszło nie tak! %s"
+
+#: gj_myauctions_allegro.php:322
+msgid "Add new settings"
+msgstr "Dodaj nowe ustawienia"
+
+#: gj_myauctions_allegro.php:324
+msgid "Edit settings"
+msgstr "Edytuj ustawienia"
+
+#: gj_myauctions_allegro.php:416 model/widget/auctions.php:38
+msgid "Title"
+msgstr "Tytuł"
+
+#: gj_myauctions_allegro.php:420 model/fields/fields_form.php:35
+#: model/tables/settings.php:16 model/widget/auctions.php:42
+msgid "Count of auctions"
+msgstr "Liczba aukcji"
+
+#: gj_myauctions_allegro.php:424 model/fields/fields_form.php:36
+#: model/tables/settings.php:17 model/widget/auctions.php:46
+msgid "Show price"
+msgstr "Pokaż cenę"
+
+#: gj_myauctions_allegro.php:428 model/fields/fields_form.php:37
+#: model/tables/settings.php:18 model/widget/auctions.php:50
+msgid "Show time"
+msgstr "Pokaż czas"
+
+#: gj_myauctions_allegro.php:432 model/widget/auctions.php:54
+msgid "Show details"
+msgstr "Pokaż szczegóły"
+
+#: gj_myauctions_allegro.php:436
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: gj_myauctions_allegro.php:494
+msgid "Allegro API Connected Successfully"
+msgstr "Połączenie Allegro API zostało nawiązane pomyślnie"
+
+#: gj_myauctions_allegro.php:503
+#, php-format
+msgid "Error: %s"
+msgstr "Błąd: %s"
+
+#: model/core/auction_item.php:52 model/core/auction_item.php:54
+#: model/core/my_auctions_allegro.php:233
+msgid "Auctions was imported"
+msgstr "Aukcje zostały zaimportowane"
+
+#: model/core/my_auctions_allegro.php:250
+msgid "Time to end of auction (Ascending)"
+msgstr "Czas do końca aukcji (Rosnąco)"
+
+#: model/core/my_auctions_allegro.php:251
+msgid "Time to end of auction (Descending)"
+msgstr "Czas do końca aukcji (Malejąco)"
+
+#: model/core/my_auctions_allegro.php:252
+msgid "Count of offers (Ascending)"
+msgstr "Liczba ofert (Rosnąco)"
+
+#: model/core/my_auctions_allegro.php:253
+msgid "Count of offers (Descending)"
+msgstr "Liczba ofert (Malejąco)"
+
+#: model/core/my_auctions_allegro.php:254
+msgid "Current price (Ascending)"
+msgstr "Aktualna cena (Rosnąco)"
+
+#: model/core/my_auctions_allegro.php:255
+msgid "Current price (Descending)"
+msgstr "Aktualna cena (Malejąco)"
+
+#: model/core/my_auctions_allegro.php:256
+msgid "Name of auction (Ascending)"
+msgstr "Nazwa aukcji (Rosnąco)"
+
+#: model/core/my_auctions_allegro.php:257
+msgid "Name of auction (Descending)"
+msgstr "Nazwa aukcji (Malejąco)"
+
+#: model/core/my_auctions_allegro.php:258
+msgid "Time of auction create (Ascending)"
+msgstr "Czas stworzenia aukcji (Rosnąco)"
+
+#: model/core/my_auctions_allegro.php:259
+msgid "Time of auction create (Descending)"
+msgstr "Czas stworzenia aukcji (Malejąco)"
+
+#: model/core/my_auctions_allegro.php:278
+msgid "Back"
+msgstr "Wstecz"
+
+#: model/core/my_auctions_allegro.php:328
+msgid "No"
+msgstr "Nie"
+
+#: model/core/my_auctions_allegro.php:329
+msgid "Yes"
+msgstr "Tak"
+
+#: model/core/my_auctions_allegro.php:351
+msgid "My auctions"
+msgstr "Moje aukcje"
+
+#: model/core/my_auctions_allegro.php:352
+msgid "Search"
+msgstr "Szukaj"
+
+#: model/core/my_auctions_allegro.php:353
+msgid "Auctions of user"
+msgstr "Aukcje użytkownika"
+
+#: model/core/my_auctions_allegro.php:361
+msgid "Block"
+msgstr "Blok"
+
+#: model/core/my_auctions_allegro.php:362
+msgid "Slidebox"
+msgstr "Panel boczny"
+
+#: model/core/my_auctions_allegro.php:442
+msgid "Details"
+msgstr "Szczegóły"
+
+#: model/core/my_auctions_allegro.php:447
+msgid "No offers"
+msgstr "Brak ofert"
+
+#: model/fields/fields_form.php:22
+msgid "Basic settings"
+msgstr "Podstawowe ustawienia"
+
+#: model/fields/fields_form.php:23 model/fields/fields_form.php:57
+#: model/tables/settings.php:11
+msgid "Site"
+msgstr "Strona"
+
+#: model/fields/fields_form.php:24 model/tables/settings.php:12
+msgid "Type of auctions"
+msgstr "Typ aukcji"
+
+#: model/fields/fields_form.php:27
+msgid "Auction import settings"
+msgstr "Ustawienia importu aukcji"
+
+#: model/fields/fields_form.php:28 model/tables/settings.php:14
+msgid "Category"
+msgstr "Kategoria"
+
+#: model/fields/fields_form.php:29 model/tables/settings.php:15
+msgid "Sort"
+msgstr "Sortowanie"
+
+#: model/fields/fields_form.php:30 model/tables/settings.php:77
+msgid "User"
+msgstr "Użytkownik"
+
+#: model/fields/fields_form.php:31
+msgid "Query"
+msgstr "Fraza"
+
+#: model/fields/fields_form.php:34
+msgid "Additional settings"
+msgstr "Dodatkowe ustawienia"
+
+#: model/fields/fields_form.php:38
+msgid "Show copyright"
+msgstr "Pokaż autora"
+
+#: model/fields/fields_form.php:56
+msgid "Allegro API Connect"
+msgstr "Połączenie Allegro API"
+
+#: model/fields/fields_form.php:58
+msgid "API Key"
+msgstr "Klucz API"
+
+#: model/fields/fields_form.php:59
+msgid "Allegro User"
+msgstr "Użytkownik Allegro"
+
+#: model/fields/fields_form.php:60
+msgid "Allegro Password"
+msgstr "Hasło Allegro"
+
+#: model/fields/fields_form.php:68
+msgid "Save"
+msgstr "Zapisz"
+
+#: model/fields/fields_form.php:81 model/fields/fields_form.php:92
+#: model/fields/fields_import_form.php:18
+msgid "Choose"
+msgstr "Wybierz"
+
+#: model/fields/fields_import_form.php:23
+#, php-format
+msgid "Query: %s"
+msgstr "Fraza: %s"
+
+#: model/fields/fields_import_form.php:36
+msgid "Import details?"
+msgstr "Importować szczegóły?"
+
+#: model/fields/fields_import_form.php:37
+msgid "Step"
+msgstr "Krok"
+
+#: model/fields/fields_import_form.php:38
+msgid "Processing"
+msgstr "Przetwarzanie"
+
+#: model/fields/fields_import_form.php:39
+msgid "Imported auctions"
+msgstr "Zaimportowane aukcje"
+
+#: model/fields/fields_import_form.php:40
+msgid "All auctions"
+msgstr "Wszystkie aukcje"
+
+#: model/fields/fields_import_form.php:46
+msgid "Submit"
+msgstr "Wyślij"
+
+#: model/service/auctions.php:55
+msgid "No auctions to import"
+msgstr "Brak aukcji do importu"
+
+#: model/tables/settings.php:10 model/tables/settings.php:72
+msgid "ID"
+msgstr "ID"
+
+#: model/tables/settings.php:13
+msgid "User allegro"
+msgstr "Użytkownik allegro"
+
+#: model/tables/settings.php:19
+msgid "Action"
+msgstr "Akcja"
+
+#: model/tables/settings.php:58
+msgid "Edit"
+msgstr "Edytuj"
+
+#: model/tables/settings.php:58
+msgid "Delete"
+msgstr "Usuń"
+
+#: model/tables/settings.php:74
+msgid "Name"
+msgstr "Nazwa"
+
+#: model/tables/settings.php:75
+msgid "Price"
+msgstr "Cena"
+
+#: model/tables/settings.php:76
+msgid "End auction"
+msgstr "Koniec aukcji"
+
+#: model/widget/auctions.php:7
+msgid "Allegro Widget"
+msgstr "Panel boczny Allegro"
+
+#: model/fields/fields_form.php:42
+msgid "Import to WooCommerce"
+msgstr "Zaimportuj do WooCommerce"
+
+#: model/tables/settings.php:23
+msgid "WooCommerce"
+msgstr "WooCommerce"

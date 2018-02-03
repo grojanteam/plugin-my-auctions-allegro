@@ -49,9 +49,9 @@ class GjmaaAuctionItem {
 
             if(!empty($this->wpdb->last_error))
                 return array('result'=>0,'message'=>$this->wpdb->last_error,'query'=>$query);
-            return array('result'=>1,'message'=>__('Auctions was imported','gj_myauctions_allegro'));
+            return array('result'=>1,'message'=>__('Auctions was imported','my-auctions-allegro-free-edition'));
         }
-        return array('result'=>1,'message'=>__('Auctions was imported','gj_myauctions_allegro'));
+        return array('result'=>1,'message'=>__('Auctions was imported','my-auctions-allegro-free-edition'));
     }
 
     public function removeItemAuctionsIds($auctionIds){

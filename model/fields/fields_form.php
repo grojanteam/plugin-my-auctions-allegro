@@ -19,24 +19,31 @@ class GjmaaMyFieldsSettingsForm {
 		$categories = $auctions->getCategories($auction_data['site_allegro']);
 		$html = $this->createForm(admin_url('admin.php?page=gjmaa_auction_settings&action=edit'.($id == 0 ? '' : '&sid='.$id)))
 		.'<table class="form-table">'
-		.'<tr valign="top"><td colspan="2"><h2>'.__('Basic settings','gj_myauctions_allegro').'</h2></td></tr>'
-        .'<tr valign="top"><th scope="row">'.__('Site','gj_myauctions_allegro').'</th><td>'.$this->generateSelect('site_allegro',$auctions->getNameOfSite(),true,($auction_data ? $auction_data['site_allegro'] : null)).'</td></tr>'
-		.'<tr valign="top"><th scope="row">'.__('Type of auctions','gj_myauctions_allegro').'</th><td>'.$this->generateSelect('type_of_auctions',$auctions->getTypeOfAuctions(),true,($auction_data ? $auction_data['type_of_auctions'] : null)).'</td></tr>'
+		.'<tr valign="top"><td colspan="2"><h2>'.__('Basic settings','my-auctions-allegro-free-edition').'</h2></td></tr>'
+        .'<tr valign="top"><th scope="row">'.__('Site','my-auctions-allegro-free-edition').'</th><td>'.$this->generateSelect('site_allegro',$auctions->getNameOfSite(),true,($auction_data ? $auction_data['site_allegro'] : null)).'</td></tr>'
+		.'<tr valign="top"><th scope="row">'.__('Type of auctions','my-auctions-allegro-free-edition').'</th><td>'.$this->generateSelect('type_of_auctions',$auctions->getTypeOfAuctions(),true,($auction_data ? $auction_data['type_of_auctions'] : null)).'</td></tr>'
 		.'</table>'
 		.'<table class="form-table" id="auction_import_settings">'
-		.'<tr valign="top"><td colspan="2"><h2>'.__('Auction import settings','gj_myauctions_allegro').'</h2></td></tr>'
-		.'<tr valign="top"><th scope="row">'.__('Category','gj_myauctions_allegro').'</th><td>'.$this->generateSelect('item_x_category',$categories,false,($auction_data && isset($auction_data['item_'.$auction_data['type_of_auctions'].'_category']) ? $auction_data['item_'.$auction_data['type_of_auctions'].'_category'] : null)).'</td></tr>'
-		.'<tr valign="top"><th scope="row">'.__('Sort','gj_myauctions_allegro').'</th><td>'.$this->generateSelect('item_x_sort',$auctions->getNameOfSort(),false,($auction_data && isset($auction_data['item_'.$auction_data['type_of_auctions'].'_sort']) ? $auction_data['item_'.$auction_data['type_of_auctions'].'_sort'] : null)).'</td></tr>'
-		.'<tr valign="top"><th scope="row">'.__('User','gj_myauctions_allegro').'</th><td>'.$this->generateTextInput('item_x_user',true,($auction_data && isset($auction_data['item_'.$auction_data['type_of_auctions'].'_user']) ? $auction_data['item_'.$auction_data['type_of_auctions'].'_user'] : null)).'</td></tr>'
-		.'<tr valign="top"><th scope="row">'.__('Query','gj_myauctions_allegro').'</th><td>'.$this->generateTextInput('item_x_query',true,($auction_data && isset($auction_data['item_'.$auction_data['type_of_auctions'].'_query']) ? $auction_data['item_'.$auction_data['type_of_auctions'].'_query'] : null)).'</td></tr>'
+		.'<tr valign="top"><td colspan="2"><h2>'.__('Auction import settings','my-auctions-allegro-free-edition').'</h2></td></tr>'
+		.'<tr valign="top"><th scope="row">'.__('Category','my-auctions-allegro-free-edition').'</th><td>'.$this->generateSelect('item_x_category',$categories,false,($auction_data && isset($auction_data['item_'.$auction_data['type_of_auctions'].'_category']) ? $auction_data['item_'.$auction_data['type_of_auctions'].'_category'] : null)).'</td></tr>'
+		.'<tr valign="top"><th scope="row">'.__('Sort','my-auctions-allegro-free-edition').'</th><td>'.$this->generateSelect('item_x_sort',$auctions->getNameOfSort(),false,($auction_data && isset($auction_data['item_'.$auction_data['type_of_auctions'].'_sort']) ? $auction_data['item_'.$auction_data['type_of_auctions'].'_sort'] : null)).'</td></tr>'
+		.'<tr valign="top"><th scope="row">'.__('User','my-auctions-allegro-free-edition').'</th><td>'.$this->generateTextInput('item_x_user',true,($auction_data && isset($auction_data['item_'.$auction_data['type_of_auctions'].'_user']) ? $auction_data['item_'.$auction_data['type_of_auctions'].'_user'] : null)).'</td></tr>'
+		.'<tr valign="top"><th scope="row">'.__('Query','my-auctions-allegro-free-edition').'</th><td>'.$this->generateTextInput('item_x_query',true,($auction_data && isset($auction_data['item_'.$auction_data['type_of_auctions'].'_query']) ? $auction_data['item_'.$auction_data['type_of_auctions'].'_query'] : null)).'</td></tr>'
 		.'</table>'
 		.'<table class="form-table" id="additional_settings">'
-		.'<tr valign="top"><td colspan="2"><h2>'.__('Additional settings','gj_myauctions_allegro').'</h2></td></tr>'
-		.'<tr valign="top"><th scope="row">'.__('Count of auctions','gj_myauctions_allegro').'</th><td>'.$this->generateNumberInput('count_of_auctions',false,($auction_data && isset($auction_data['count_of_auctions']) ? $auction_data['count_of_auctions'] : 10)).'</td></tr>'
-		.'<tr valign="top"><th scope="row">'.__('Show price','gj_myauctions_allegro').'</th><td>'.$this->generateSelect('show_price',$auctions->booleanFields(),false,($auction_data ? $auction_data['show_price'] : 0)).'</td></tr>'
-		.'<tr valign="top"><th scope="row">'.__('Show time','gj_myauctions_allegro').'</th><td>'.$this->generateSelect('show_time',$auctions->booleanFields(),false,($auction_data ? $auction_data['show_time'] : 0)).'</td></tr>'
-		.'<tr valign="top"><th scope="row">'.__('Show copyright','gj_myauctions_allegro').'</th><td>'.$this->generateSelect('show_copyright',$auctions->booleanFields(),false,($auction_data ? $auction_data['show_copyright'] : 1)).'</td></tr>'
-		.'</table>'
+		.'<tr valign="top"><td colspan="2"><h2>'.__('Additional settings','my-auctions-allegro-free-edition').'</h2></td></tr>'
+		.'<tr valign="top"><th scope="row">'.__('Count of auctions','my-auctions-allegro-free-edition').'</th><td>'.$this->generateNumberInput('count_of_auctions',false,($auction_data && isset($auction_data['count_of_auctions']) ? $auction_data['count_of_auctions'] : 10)).'</td></tr>'
+		.'<tr valign="top"><th scope="row">'.__('Show price','my-auctions-allegro-free-edition').'</th><td>'.$this->generateSelect('show_price',$auctions->booleanFields(),false,($auction_data ? $auction_data['show_price'] : 0)).'</td></tr>'
+		.'<tr valign="top"><th scope="row">'.__('Show time','my-auctions-allegro-free-edition').'</th><td>'.$this->generateSelect('show_time',$auctions->booleanFields(),false,($auction_data ? $auction_data['show_time'] : 0)).'</td></tr>'
+		.'<tr valign="top"><th scope="row">'.__('Show copyright','my-auctions-allegro-free-edition').'</th><td>'.$this->generateSelect('show_copyright',$auctions->booleanFields(),false,($auction_data ? $auction_data['show_copyright'] : 1)).'</td></tr>';
+
+		$wooCommerceService = new GjmaaServiceWoocommerce();
+		if($wooCommerceService->isEnabled()){
+		    $html .= '<tr valign="top"><th scope="row">'.__('Import to WooCommerce','my-auctions-allegro-free-edition').'</th><td>'.$this->generateSelect('to_woocommerce',$auctions->booleanFields(),false,($auction_data ? $auction_data['to_woocommerce'] : 0)).'</td></tr>';
+        }
+
+		$html .=
+		'</table>'
 		.$this->generateHiddenInput('id',$id)
 		.$this->getSaveButton()
 		.$this->endForm();
@@ -53,11 +60,11 @@ class GjmaaMyFieldsSettingsForm {
 
         $html = $this->createForm(admin_url('admin.php?page=gjmaa_settings'),'settingsForm')
             .'<table class="form-table" id="allegro_api_connect">'
-            .'<tr valign="top"><td colspan="2"><h2>'.__('Allegro API Connect','gj_myauctions_allegro').'</h2></td></tr>'
-            .'<tr valign="top"><th scope="row">'.__('Site','gj_myauctions_allegro').'</th><td>'.$this->generateSelect('allegro_site',$auctionsModel->getNameOfSite(),true,(isset($plgSettings['allegro_site']) ? $plgSettings['allegro_site'] : null)).'</td></tr>'
-            .'<tr valign="top"><th scope="row">'.__('API Key','gj_myauctions_allegro').'</th><td>'.$this->generateTextInput('allegro_api',false,(isset($plgSettings['allegro_api']) ? $plgSettings['allegro_api'] : null)).'</td></tr>'
-            .'<tr valign="top"><th scope="row">'.__('Allegro User','gj_myauctions_allegro').'</th><td>'.$this->generateTextInput('allegro_username',true,(isset($plgSettings['allegro_username']) ? $plgSettings['allegro_username'] : null)).'</td></tr>'
-            .'<tr valign="top"><th scope="row">'.__('Allegro Password','gj_myauctions_allegro').'</th><td>'.$this->generatePasswordInput('allegro_password',true,(isset($plgSettings['allegro_password']) ? $plgSettings['allegro_password'] : null)).'</td></tr>'
+            .'<tr valign="top"><td colspan="2"><h2>'.__('Allegro API Connect','my-auctions-allegro-free-edition').'</h2></td></tr>'
+            .'<tr valign="top"><th scope="row">'.__('Site','my-auctions-allegro-free-edition').'</th><td>'.$this->generateSelect('allegro_site',$auctionsModel->getNameOfSite(),true,(isset($plgSettings['allegro_site']) ? $plgSettings['allegro_site'] : null)).'</td></tr>'
+            .'<tr valign="top"><th scope="row">'.__('API Key','my-auctions-allegro-free-edition').'</th><td>'.$this->generateTextInput('allegro_api',false,(isset($plgSettings['allegro_api']) ? $plgSettings['allegro_api'] : null)).'</td></tr>'
+            .'<tr valign="top"><th scope="row">'.__('Allegro User','my-auctions-allegro-free-edition').'</th><td>'.$this->generateTextInput('allegro_username',true,(isset($plgSettings['allegro_username']) ? $plgSettings['allegro_username'] : null)).'</td></tr>'
+            .'<tr valign="top"><th scope="row">'.__('Allegro Password','my-auctions-allegro-free-edition').'</th><td>'.$this->generatePasswordInput('allegro_password',true,(isset($plgSettings['allegro_password']) ? $plgSettings['allegro_password'] : null)).'</td></tr>'
             .'</table>'
             .$this->getSaveButton()
             .$this->endForm();
@@ -65,7 +72,7 @@ class GjmaaMyFieldsSettingsForm {
     }
 	
 	public function getSaveButton(){
-		return '<input class="button button-primary button-large" type="submit" value="'.__('Save','gj_myauctions_allegro').'" />';
+		return '<input class="button button-primary button-large" type="submit" value="'.__('Save','my-auctions-allegro-free-edition').'" />';
 	}
 	
 	public function createForm($action,$id = 'importAuctions',$method = 'POST'){
@@ -78,7 +85,7 @@ class GjmaaMyFieldsSettingsForm {
 	
 	public function generateSelect($name,$options,$required = null,$value = null,$class = ''){
 		$select = '<select class="'.$class.'" id="'.$name.'" name="'.$name.'"'.($required?' required':'').'>'
-		.'<option value="">' . __('Choose','gj_myauctions_allegro') . '</option>';
+		.'<option value="">' . __('Choose','my-auctions-allegro-free-edition') . '</option>';
 		foreach($options as $option_value => $name){
 			$select .= '<option value="'.$option_value.'"'.($option_value == $value ? 'selected="selected"' : '').'>'.$name.'</option>';
 		}
@@ -89,7 +96,7 @@ class GjmaaMyFieldsSettingsForm {
 	
 	public function generateCategoryTree($name,$options,$required = null,$value = null){
 		$select = '<select id="'.$name.'" name="'.$name.'"'.($required?' required':'').'>'
-		.'<option value="">' . __('Choose','gj_myauctions_allegro') . '</option>';		
+		.'<option value="">' . __('Choose','my-auctions-allegro-free-edition') . '</option>';
 		$select .= $this->createSelectInput($options,'',0,$value);
 		$select .= '</select>';
 		
