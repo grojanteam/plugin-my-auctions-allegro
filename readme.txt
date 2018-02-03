@@ -1,20 +1,25 @@
 === My auctions allegro FREE EDITION ===
 Contributors: grojanteam
-Tags: allegro, wordpress, import, auction, auctions, display
+Tags: allegro, wordpress, import, auctions, display, woocommerce, product, category, media
 Requires at least: 4.0
 Tested up to: 4.9.2
-Stable tag: 1.6.1
+Stable tag: 1.7.3
 Support Link: https://grojanteam.pl/
 Demo Link: https://grojanteam.pl/wp
 Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X8DEMZYH2MT9W
-Text Domain: gj_myauctions_allegro
-Domain Path: /
+Text Domain: my-auctions-allegro-free-edition
+Domain Path: /lang/
 
 == Description ==
 
-Plug-in display auctions from popular polish auction website called allegro.pl 
+Plug-in import auctions to wordpress from allegro, if you have woocommerce you can also import auctions as product
 
 == Support ==
+
+1. If you need more information, just go to my site
+2. If you have any problem with plugin just email to me, or use forum to create a thread about your problem
+
+== Installation ==
 
 1. Upload plug-in to wp-content/plugins
 2. Enable plug-in in your panel administration
@@ -44,10 +49,28 @@ Plug-in display auctions from popular polish auction website called allegro.pl
 
 == Frequently Asked Questions ==
 
-Q: How to import auctions from allegro
-A: First, we need to add allegro profile to your plug-in. Go to My auctions allegro -> Auction settings. Click add, set your profile and click save. Then you can go to import auctions and choose your added profile and click "Send" to import your auctions.
+= How to import auctions from allegro =
+
+First, we need to add allegro profile to your plug-in. Go to My auctions allegro -> Auction settings. Click add, set your profile and click save. Then you can go to import auctions and choose your added profile and click "Send" to import your auctions.
+
+== Upgrade Notice ==
+
+= 1.7 =
+Upgrade is needed if you have version 1.6.2 because of problems with aliases, also if you have WooCommerce Store in your WordPress you can use this plugin to import auctions from allegro as product
 
 == Change Log ==
+
+= 1.7.3 =
+- Fix import auctions using cron
+
+= 1.7.2 =
+- Fix problem with automatic update
+
+= 1.7 =
+- Import basic information from allegro auctions as WooCommerce Product
+
+= 1.6.2 =
+- Fix translations again
 
 = 1.6.1 =
 - Fix synchronize auctions using cron

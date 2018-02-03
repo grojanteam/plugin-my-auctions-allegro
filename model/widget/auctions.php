@@ -4,7 +4,7 @@ class Gjmaa_Allegro_Widget extends WP_Widget {
 
 	// constructor
 	function __construct() {
-		parent::__construct(false, $name = __('Allegro Widget', 'gj_myauctions_allegro') );
+		parent::__construct(false, $name = __('Allegro Widget', 'my-auctions-allegro-free-edition') );
 	}
 
 	// widget form creation
@@ -31,27 +31,27 @@ class Gjmaa_Allegro_Widget extends WP_Widget {
 		}
 		
 		echo '<p>'
-			.'<label for="'.$this->get_field_id('settings_of_auctions').'">'.__('Settings of auctions', 'gj_myauctions_allegro').':</label>'
+			.'<label for="'.$this->get_field_id('settings_of_auctions').'">'.__('Settings of auctions', 'my-auctions-allegro-free-edition').':</label>'
 			.$importFields->getImportSelect($settings_of_auctions,$this->get_field_id('settings_of_auctions'),$this->get_field_name('settings_of_auctions'),'widefat')
 			.'</p>'
 			.'<p>'
-			.'<label for="'.$this->get_field_id('title').'">'.__('Title').':</label>'
+			.'<label for="'.$this->get_field_id('title').'">'.__('Title', 'my-auctions-allegro-free-edition').':</label>'
 			.'<input class="widefat" id="'.$this->get_field_id('title').'" name="'.$this->get_field_name('title').'" type="text" value="'.$title.'" />'
 			.'</p>'
 			.'<p>'
-			.'<label for="'.$this->get_field_id('count').'">'.__('Count of auctions', 'gj_myauctions_allegro').':</label>'
+			.'<label for="'.$this->get_field_id('count').'">'.__('Count of auctions', 'my-auctions-allegro-free-edition').':</label>'
 			.$fields->generateNumberInput($this->get_field_name('count'),false,$count,'widefat',1,10)
 			.'</p>'
 			.'<p>'
-			.'<label for="'.$this->get_field_id('show_price').'">'.__('Show price', 'gj_myauctions_allegro').':</label>'
+			.'<label for="'.$this->get_field_id('show_price').'">'.__('Show price', 'my-auctions-allegro-free-edition').':</label>'
 			.$fields->generateSelect($this->get_field_name('show_price'),$modelAuctions->booleanFields(),false,$show_price,'widefat')
 			.'</p>'
 			.'<p>'
-			.'<label for="'.$this->get_field_id('show_time').'">'.__('Show time', 'gj_myauctions_allegro').':</label>'
+			.'<label for="'.$this->get_field_id('show_time').'">'.__('Show time', 'my-auctions-allegro-free-edition').':</label>'
 			.$fields->generateSelect($this->get_field_name('show_time'),$modelAuctions->booleanFields(),false,$show_time,'widefat')
 			.'</p>'
             .'<p>'
-            .'<label for="'.$this->get_field_id('show_details').'">'.__('Show details', 'gj_myauctions_allegro').':</label>'
+            .'<label for="'.$this->get_field_id('show_details').'">'.__('Show details', 'my-auctions-allegro-free-edition').':</label>'
             .$fields->generateSelect($this->get_field_name('show_details'),$modelAuctions->booleanFields(),false,$show_details,'widefat')
             .'</p>';
 			

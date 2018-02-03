@@ -46,6 +46,7 @@ class GjmaaMyAuctionsAllegro {
 			thumbnail_size VARCHAR(250),
 			show_copyright INT,
 			last_sync DATE NULL,
+			to_woocommerce INT NULL,
 			PRIMARY KEY (id))
 			CHARACTER SET utf8 COLLATE utf8_bin";
 
@@ -63,6 +64,9 @@ class GjmaaMyAuctionsAllegro {
         switch($version){
             case '1.6':
                 $this->wpdb->query('ALTER TABLE '.$this->tableName.' ADD COLUMN last_sync DATE NULL AFTER show_copyright');
+                break;
+            case '1.7':
+                $this->wpdb->query('ALTER TABLE '.$this->tableName.' ADD COLUMN to_woocommerce SMALLINT NULL AFTER last_sync');
                 break;
         }
     }
@@ -230,7 +234,7 @@ class GjmaaMyAuctionsAllegro {
 
 		if(!empty($wpdb->last_error))
 			return array('result'=>0,'message'=>$wpdb->last_error,'query'=>$query);
-		return array('result'=>1,'message'=>__('Auctions was imported','gj_myauctions_allegro'));
+		return array('result'=>1,'message'=>__('Auctions was imported','my-auctions-allegro-free-edition'));
 	}
 	
 	
@@ -247,16 +251,16 @@ class GjmaaMyAuctionsAllegro {
 	
 	public function getNameOfSort($sort = null){
 		$sorts = array(
-			'1_0' => __('Time to end of auction (Ascending)','gj_myauctions_allegro'),
-			'1_1' => __('Time to end of auction (Descending)','gj_myauctions_allegro'),
-			'2_0' => __('Count of offers (Ascending)','gj_myauctions_allegro'),
-			'2_1' => __('Count of offers (Descending)','gj_myauctions_allegro'),
-			'4_0' => __('Current price (Ascending)','gj_myauctions_allegro'),
-			'4_1' => __('Current price (Descending)','gj_myauctions_allegro'),
-			'8_0' => __('Name of auction (Ascending)','gj_myauctions_allegro'),
-			'8_1' => __('Name of auction (Descending)','gj_myauctions_allegro'),
-            '16_0' => __('Time of auction create (Ascending)','gj_myauctions_allegro'),
-            '16_1' => __('Time of auction create (Descending)','gj_myauctions_allegro')
+			'1_0' => __('Time to end of auction (Ascending)','my-auctions-allegro-free-edition'),
+			'1_1' => __('Time to end of auction (Descending)','my-auctions-allegro-free-edition'),
+			'2_0' => __('Count of offers (Ascending)','my-auctions-allegro-free-edition'),
+			'2_1' => __('Count of offers (Descending)','my-auctions-allegro-free-edition'),
+			'4_0' => __('Current price (Ascending)','my-auctions-allegro-free-edition'),
+			'4_1' => __('Current price (Descending)','my-auctions-allegro-free-edition'),
+			'8_0' => __('Name of auction (Ascending)','my-auctions-allegro-free-edition'),
+			'8_1' => __('Name of auction (Descending)','my-auctions-allegro-free-edition'),
+            '16_0' => __('Time of auction create (Ascending)','my-auctions-allegro-free-edition'),
+            '16_1' => __('Time of auction create (Descending)','my-auctions-allegro-free-edition')
 		);
 					
 		return !is_null($sort) ? (isset($sorts[$sort])?$sorts[$sort]:'---') : $sorts;
@@ -275,7 +279,7 @@ class GjmaaMyAuctionsAllegro {
 
         $select = array();
         if($currentCategory) {
-            $select[$currentCategory->parent_category_id] = ' <= ' . __('Back', 'gj_myauctions_allegro');
+            $select[$currentCategory->parent_category_id] = ' <= ' . __('Back', 'my-auctions-allegro-free-edition');
             $select[$currentCategory->category_id] = $currentCategory->name;
         }
         foreach($categories as $category) {
@@ -325,8 +329,8 @@ class GjmaaMyAuctionsAllegro {
 	public function booleanFields($option = null){
 		$value = '---';
 		$booleanFields = array(
-			0 => __('No','gj_myauctions_allegro'),
-			1 => __('Yes','gj_myauctions_allegro')
+			0 => __('No','my-auctions-allegro-free-edition'),
+			1 => __('Yes','my-auctions-allegro-free-edition')
 		);
 		
 		return !is_null($option) ? (isset($booleanFields[$option]) ? $booleanFields[$option] : $value) : $booleanFields;
@@ -348,9 +352,9 @@ class GjmaaMyAuctionsAllegro {
 	
 	public function getTypeOfAuctions($type = null){
 		$type_of_auctions = array(
-			'my_auctions' => __('My auctions','gj_myauctions_allegro'),
-			'search' => __('Search','gj_myauctions_allegro'),
-			'auctions_of_user' => __('Auctions of user', 'gj_myauctions_allegro')
+			'my_auctions' => __('My auctions','my-auctions-allegro-free-edition'),
+			'search' => __('Search','my-auctions-allegro-free-edition'),
+			'auctions_of_user' => __('Auctions of user', 'my-auctions-allegro-free-edition')
 		);
 		
 		return !is_null($type) ? (isset($type_of_auctions[$type])?$type_of_auctions[$type]:'---') : $type_of_auctions;
@@ -358,8 +362,8 @@ class GjmaaMyAuctionsAllegro {
 	
 	public function getLayouts($layout = null){
 		$layouts = array(
-			'block' => __('Block','gj_myauctions_allegro'),
-			'slidebox' => __('Slidebox','gj_myauctions_allegro')
+			'block' => __('Block','my-auctions-allegro-free-edition'),
+			'slidebox' => __('Slidebox','my-auctions-allegro-free-edition')
 		);
 		
 		return !is_null($layout) ? (isset($layouts[$layout])?$layouts[$layout]:'---') : $layouts;
@@ -439,7 +443,7 @@ class GjmaaMyAuctionsAllegro {
                     .'<a class="title_allegro" target="_blank" href="'.$url.'" title="'.$title.'"><span itemprop="name">'.$title.'</span></a>'
                     .((!isset($attrs['show_price']) && $settingsById['show_price'] == 1) || (isset($attrs['show_price']) && $attrs['show_price'] == 1) ? '<span class="price_allegro" title="">'.number_format($auction['auction_price'],2,'.','').$this->getCurrency($settingsById['site_allegro']).'</span>' : '')
                     .((!isset($attrs['show_time']) && $settingsById['show_time'] == 1) || (isset($attrs['show_time']) && $attrs['show_time'] == 1) ? '<span class="time_allegro" title="">'.$auction['auction_end'].'</span>' : '')
-                    .((isset($attrs['show_details']) && $attrs['show_details'] == 1) ? '<a href="'.$url.'" class="title_allegro '.($item_allegro_model->getItemById($id) ? "show_auction_details" : "").'" title="'.$title.'" target="_blank">'.__('Details','gj_myauctions_allegro_pro').'</a>' : '')
+                    .((isset($attrs['show_details']) && $attrs['show_details'] == 1) ? '<a href="'.$url.'" class="title_allegro '.($item_allegro_model->getItemById($id) ? "show_auction_details" : "").'" title="'.$title.'" target="_blank">'.__('Details','my-auctions-allegro-free-edition_pro').'</a>' : '')
                     .'</p>'
                     .'</div>';
             }
