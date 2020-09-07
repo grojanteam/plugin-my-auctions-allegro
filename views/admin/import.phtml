@@ -1,0 +1,36 @@
+<?php 
+$importForm = GJMAA::getForm('import');
+$importForm->prepareForm();
+$importForm->setFormId('import_form');
+$importForm->generate(); 
+?>
+<div id="wrap">
+	<div id="notifications"></div>
+	<h1 class="wp-heading-inline"><?php echo __('Import auctions',GJMAA_TEXT_DOMAIN); ?></h1>
+	<div class="progress-section">
+		<div id="step" class="progress-block">
+			<div class="label"><?php echo __('Step',GJMAA_TEXT_DOMAIN); ?>:</div> 
+			<div class="bar">
+			  <div class="line">0/0</div>
+			</div>
+		</div>
+		
+		<div id="auction" class="progress-block">
+			<div class="label"><?php echo __('Auctions',GJMAA_TEXT_DOMAIN); ?>:</div> 
+			<div class="bar">
+			  <div class="line">0/0</div>
+			</div>
+		</div>
+		
+		<div id="progress" class="progress-block">
+			<div class="label"><?php echo __('Progress',GJMAA_TEXT_DOMAIN); ?>:</div> 
+			<div class="bar">
+			  <div class="line">0%</div>
+			</div>
+		</div>
+	</div>
+	
+	<?php 
+	echo $importForm->toHtml(); 
+	?>
+</div>

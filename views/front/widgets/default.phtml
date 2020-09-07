@@ -1,0 +1,44 @@
+<?php $title = $args['before_title'] . apply_filters('widget_title', $title) . $args['after_title']; ?>
+<?php echo $args['before_widget']; ?>
+<?php echo $title; ?>
+<div id="<?php echo $args['widget_id']; ?>" class="module_max_width">
+    <?php
+    $auctions = isset($auctions) ? $auctions : [];
+    if(!empty($auctions)){
+        foreach ($auctions as $auction) {
+            $auctionId = $auction['auction_id'];
+            $name = $auction['auction_name'];
+            $images = json_decode($auction['auction_images']);
+            $mainImage = isset($images[0]) ? $images[0] : '';
+            $url = GJMAA::getHelper('auctions')->getAuctionUrl($auction['id']);
+            $price = GJMAA::getHelper('auctions')->getAuctionPrice($auction['id']);
+            $time = GJMAA::getHelper('auctions')->getAuctionTime($auction['id']);
+            ?>
+        <div class="collect_allegro_click item item-top" 
+        	data-auction-id="<?php echo $auctionId; ?>"
+        	data-profile-id="<?php echo $profile_id; ?>">
+    		<a class="image_allegro top" 
+    			target="_blank"
+    			href="<?php echo $url; ?>" 
+    			title="<?php echo $name; ?>"
+    			style="width:<?php echo $image_width; ?>px; height: <?php echo $image_height; ?>px;">
+    				<img class="lozad" data-src="<?php echo $mainImage->url; ?>" style="width: <?php echo $image_width; ?>px; height: <?php echo $image_height; ?>px;" />
+    		</a> 
+    		
+    		<a class="image_allegro top" 
+    			target="_blank"
+    			href="<?php echo $url; ?>"
+    			title="<?php echo $name; ?>"><?php echo $name; ?></a>
+    			
+    		<?php if($show_price): ?><span class="price"><?php echo $price; ?></span><?php endif; ?>
+    		<?php if($show_time): ?><span class="time"><?php echo $time; ?></span><?php endif; ?>
+    	</div>
+        <?php
+        }
+    } else {
+        echo '<p>' . __('No offers',GJMAA_TEXT_DOMAIN) . '</p>';
+    }
+    ?>
+    <div class="gjmaa_copyright"><?php echo __('Powered by',GJMAA_TEXT_DOMAIN); ?> <a href="https://grojanteam.pl" target="_blank">Grojan Team</a></div>
+</div>
+<?php echo $args['after_widget']; ?>

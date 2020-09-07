@@ -1,0 +1,63 @@
+<?php 
+$supportHelper = GJMAA::getHelper('support');
+$playlists = $supportHelper->getPlaylist();
+
+$restartSystem = admin_url('admin.php?page=gjmaa_support&action=restart');
+?>
+
+<div class="wrap support">
+    <h1 class="wp-heading-inline"><?php echo __('Support',GJMAA_TEXT_DOMAIN); ?></h1>
+    <div id="right-panel" class="right-panel" style="display:block;">
+    <div class="content mt-12">
+        <div class="col-lg-12">
+        	<div class="text-center">
+    			<div class="card-body">
+                    <div class="stat-widget-one">
+                        <div class="stat-content dib" style="margin-bottom: 10px;">
+                            <div class="stat-text">
+                            	<h2 class="text-secondary"><a href="<?php echo $restartSystem; ?>" onclick="return confirm('<?php echo __('Are you sure that you really want to restart system? All data will be erased!',GJMAA_TEXT_DOMAIN); ?>');"><?php echo __('Restart System',GJMAA_TEXT_DOMAIN); ?></a></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-auctions">
+                        <div class="description"><?php echo __('Befere click on "Restart System", please be sure that you want to do it.<br />All data will be erased, all auctions, profiles and settings will be removed.',GJMAA_TEXT_DOMAIN); ?></div>
+                    </div>
+                </div>
+    		</div>
+		</div>
+    <?php 
+    $index = 0;
+    $count = count($playlists);
+    foreach($playlists as $playlistId => $playlist):
+        ?>
+		<div class="col-lg-12">
+    		<div class="text-center">
+    			<div class="card-body">
+                    <div class="stat-widget-one">
+                        <div class="stat-content dib" style="margin-bottom: 10px;">
+                            <div class="stat-text">
+                            	<h2 class="text-secondary"><?php echo $playlist['name'] ?></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-auctions">
+                        <div class="movie"><?php echo $supportHelper->generateHtmlPlaylist($playlistId); ?></div>
+                    </div>
+                    <div class="card-auctions">
+                        <div class="description"><?php echo isset($playlist['excerpt']) ? $playlist['excerpt'] : '' ?></div>
+                    </div>
+                </div>
+    		</div>
+    	</div>
+        <?php 
+        $index++;
+        if($index % 2 == 0 && $count > $index): ?>
+        	</div>
+        	<div class="content mt-12">
+    	<?php
+    	endif;
+    endforeach;
+    ?>
+    </div>
+    </div>
+</div>

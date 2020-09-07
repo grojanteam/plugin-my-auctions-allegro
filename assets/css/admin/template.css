@@ -1,0 +1,44 @@
+/**
+* @version 2.0.0
+* @package MyAuctionsAllegro
+* @copyright Copyright (C) 2016 - 2019 GroJan Team, All rights reserved.
+* @license https://grojanteam.pl/licencje/gnu-gpl
+* @author url: https://grojanteam.pl
+* @author email l.grochal@grojanteam.pl
+*/ 
+
+#wpwrap {
+	background-color: #fff;
+}
+
+.progress-section {
+	margin: 10px 30px 10px 0;
+}
+
+.progress-section .progress-block {
+	margin: 10px 0;
+} 
+
+.progress-section .progress-block .label {
+	font-size: 1.25em;
+}
+
+.progress-section .progress-block .bar {
+	height: 30px;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+
+.progress-section .progress-block .bar .line {
+	background-color: #80c64a;
+	padding: 5px 0;
+	height: 20px;
+	color: #fff;
+	font-weight: bold;
+	width: 10%;
+	text-align:center;
+	animation: move 2s linear infinite;
+	-webkit-appearance: none;
+  	appearance: none;
+  	transition: 0.3s all linear;
+}

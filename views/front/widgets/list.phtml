@@ -1,0 +1,42 @@
+<h1><?php echo $title; ?></h1>
+<div id="shortcode-page-" class="module_max_width">
+    <?php
+    $auctions = isset($auctions) ? $auctions : [];
+    $show_price = isset($show_price) ? $show_price : false;
+    $show_time = isset($show_time) ? $show_time : false;
+    $image_width = isset($image_width) ? $image_width : 200;
+    $image_height = isset($image_height) ? $image_height : 150;
+    if (! empty($auctions)):
+        foreach ($auctions as $auction):
+            $auctionId = $auction['auction_id'];
+            $name = $auction['auction_name'];
+            $images = json_decode($auction['auction_images']);
+            $mainImage = isset($images[0]) ? $images[0] : null;
+            $url = GJMAA::getHelper('auctions')->getAuctionUrl($auction['id']);
+            $price = GJMAA::getHelper('auctions')->getAuctionPrice($auction['id']);
+            $time = GJMAA::getHelper('auctions')->getAuctionTime($auction['id']);
+            ?>
+    <div class="collect_allegro_click auction-list"
+		data-auction-id="<?php echo $auctionId; ?>"
+		data-profile-id="<?php echo $profile_id; ?>">
+		<div class="image_allegro">
+		<?php if($mainImage) : ?>
+		<a target="_blank"
+			href="<?php echo $url; ?>" title="<?php echo $name; ?>"> 
+			<img class="lozad" data-src="<?php echo $mainImage->url; ?>" style="width: <?php echo $image_width; ?>px; height: <?php echo $image_height; ?>px;" />
+		</a> 
+		<?php endif; ?>
+		</div>
+		<div class="attributes">
+		<a class="image_allegro" target="_blank"
+			href="<?php echo $url; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>
+			
+			<?php if($show_price): ?><span class="price"><?php echo $price; ?></span><?php endif; ?>
+			<?php if($show_time): ?><span class="time"><?php echo $time; ?></span><?php endif; ?>
+			</div>
+	</div>
+    <?php endforeach; else: ?>
+        <?php echo __('No offers',GJMAA_TEXT_DOMAIN); ?>
+    <?php endif; ?>
+    <div class="gjmaa_copyright"><?php echo __('Powered by',GJMAA_TEXT_DOMAIN); ?> <a href="https://grojanteam.pl" target="_blank">Grojan Team</a></div>
+</div>

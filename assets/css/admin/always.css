@@ -1,0 +1,14 @@
+/**
+* @version 2.0.0
+* @package MyAuctionsAllegro
+* @copyright Copyright (C) 2016 - 2019 GroJan Team, All rights reserved.
+* @license https://grojanteam.pl/licencje/gnu-gpl
+* @author url: https://grojanteam.pl
+* @author email l.grochal@grojanteam.pl
+*/ 
+
+#toplevel_page_gjmaa_dashboard .wp-menu-image {
+	background-image: url('../../img/rsz_allegro.png');
+	background-repeat: no-repeat;
+	background-position: 5px;
+}

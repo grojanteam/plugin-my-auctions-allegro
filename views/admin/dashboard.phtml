@@ -1,0 +1,307 @@
+<?php 
+$dashboardHelper = GJMAA::getHelper('dashboard');
+$isCompatibleClass = 'bg-success';
+$isDangerClass = 'bg-danger';
+
+$isCompatibleWordPress = $dashboardHelper->isCompatibleWordpressVersion() ? $isCompatibleClass : $isDangerClass;
+$isCompatiblePHPVersion = $dashboardHelper->isCompatiblePHPVersion() ? $isCompatibleClass : $isDangerClass;
+$isCurlEnabled = $dashboardHelper->isCurlEnabled() ? $isCompatibleClass : $isDangerClass;
+$isAllowUrlFopenEnabled = $dashboardHelper->isPhpFopenEnable() ? $isCompatibleClass : $isDangerClass;
+$auctionsHelper = GJMAA::getHelper('auctions');
+$profilesHelper = GJMAA::getHelper('profiles');
+$mostPopular = $auctionsHelper->getMostPopularAuctions();
+$newest = $auctionsHelper->getNewestAuctions();
+$oldest = $auctionsHelper->getLastMinuteAuctions();
+$lowStock = $auctionsHelper->getLowStockAuctions();
+$listErrors = $dashboardHelper->getAllProfileErrors();
+
+?>
+
+<div class="wrap">
+	<h1 class="wp-heading-inline"><?php echo __('Dashboard',GJMAA_TEXT_DOMAIN); ?></h1>
+    <div id="right-panel" class="right-panel">
+    	<div class="content mt-12">
+    		<div class="col-lg-12 ">
+        		<div class="bg-warning text-white text-center">
+        			<div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                                <div class="stat-text text-white">
+                                	<h2><?php echo __('Plugin notifications',GJMAA_TEXT_DOMAIN); ?></h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-auctions">
+                            <?php if(!empty($listErrors)): ?>
+                            <ul>
+                            	<?php foreach($listErrors as $id => $error): ?>
+                            	<?php $countText = $error['count'] > 1 ? 'errors' : 'error'; ?>
+                            	<li class="<?php echo $error['count'] > 5 ? 'text-red' : ''; ?>"><?php echo __('Profile',GJMAA_TEXT_DOMAIN); ?> <?php echo $error['name']; ?> [<?php echo $id; ?>] <?php echo __('has',GJMAA_TEXT_DOMAIN); ?> <?php echo $error['count']; ?> <?php echo __($countText, GJMAA_TEXT_DOMAIN); ?> <?php echo __('with message',GJMAA_TEXT_DOMAIN); ?> <?php echo $error['error']; ?></li>
+                            	<?php endforeach; ?>
+                            </ul>
+                        	<?php else: ?>
+                            	<p class="text-center text-white"><?php echo __('No messages',GJMAA_TEXT_DOMAIN); ?></p>
+                        	<?php endif; ?>
+                        </div>
+                    </div>
+        		</div>
+        	</div>
+        </div>
+        <div class="content mt-3">
+        	<div class="col-lg-3">
+                <div class="card <?php echo $isCurlEnabled; ?>">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                                <div class="stat-text text-white"><?php echo __('PHP cURL',GJMAA_TEXT_DOMAIN); ?></div>
+                                <div class="stat-digit text-white"><?php echo $isCurlEnabled ? __('Enabled',GJMAA_TEXT_DOMAIN) : __('Disabled',GJMAA_TEXT_DOMAIN); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3">
+                <div class="card <?php echo $isAllowUrlFopenEnabled; ?>">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                                <div class="stat-text text-white"><?php echo __('Allow URL fopen',GJMAA_TEXT_DOMAIN); ?></div>
+                                <div class="stat-digit text-white"><?php echo $dashboardHelper->isPhpFopenEnable() ? __('Enabled',GJMAA_TEXT_DOMAIN) : __('Disabled',GJMAA_TEXT_DOMAIN); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-2">
+                <div class="card <?php echo $isCompatiblePHPVersion; ?>">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                                <div class="stat-text text-white"><?php echo __('PHP',GJMAA_TEXT_DOMAIN); ?></div>
+                                <div class="stat-digit text-white"><?php echo phpversion(); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-2">
+                <div class="card <?php echo $isCompatibleWordPress; ?>">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                                <div class="stat-text text-white"><?php echo __('WordPress',GJMAA_TEXT_DOMAIN); ?></div>
+                                <div class="stat-digit text-white"><?php echo $dashboardHelper->getWordPressVersion(); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-2">
+                <div class="card bg-success">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                                <div class="stat-text"><?php echo __('Plugin',GJMAA_TEXT_DOMAIN); ?></div>
+                                <div class="stat-digit"><?php echo GJMAA::getVersion(); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-xl-3 col-lg-6">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                            	<i class="fa fa-user"></i>
+                                <div class="stat-text"><?php echo __('Total profiles',GJMAA_TEXT_DOMAIN); ?></div>
+                                <div class="stat-digit"><?php echo $profilesHelper->getTotalProfiles(); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-3 col-lg-6">
+                <div class="card bg-secondary text-white">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                            	<i class="fa fa-gavel"></i>
+                                <div class="stat-text"><?php echo __('Total auctions',GJMAA_TEXT_DOMAIN); ?></div>
+                                <div class="stat-digit"><?php echo $auctionsHelper->getCountOfAllAuctions(); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-6">
+                <div class="card bg-danger text-white">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                            	<i class="fa fa-star"></i>
+                                <div class="stat-text"><?php echo __('Total clicks',GJMAA_TEXT_DOMAIN)?></div>
+                                <div class="stat-digit"><?php echo $auctionsHelper->getCountOfTotalAuctionClicks(); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-lg-6">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-content dib">
+                            	<i class="fa fa-eye"></i>
+                                <div class="stat-text"><?php echo __('Total visits',GJMAA_TEXT_DOMAIN)?></div>
+                                <div class="stat-digit"><?php echo $auctionsHelper->getCountOfTotalAuctionVisits(); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="clear"></div>
+            
+            <div class="col-xl-3 col-lg-6 topAuctions" id="popular_auctions">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                    	<h4><?php echo __('The most popular',GJMAA_TEXT_DOMAIN); ?></h4>
+                    </div>
+                    <div class="card-auctions">
+                    <?php if(!empty($mostPopular)): ?>
+                    	<?php foreach($mostPopular as $auction): ?>
+                    	<p><a class="text-white" href="<?php echo $auctionsHelper->getAuctionUrl($auction['id']); ?>" target="_blank" title="<?php echo $auction['auction_name']; ?>"><?php echo $auction['auction_name']; ?></a></p>
+                    	<?php endforeach; ?>
+                	<?php else: ?>
+                    	<p class="text-center text-white"><?php echo __('No offers',GJMAA_TEXT_DOMAIN); ?></p>
+                	<?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-6 topAuctions" id="newest_auctions">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                    	<h4><?php echo __('Newest',GJMAA_TEXT_DOMAIN); ?></h4>
+                    </div>
+                    <div class="card-auctions">
+                    <?php if(!empty($newest)): ?>
+                    	<?php foreach($newest as $auction): ?>
+                    	<p><a class="text-white" href="<?php echo $auctionsHelper->getAuctionUrl($auction['id']); ?>" target="_blank" title="<?php echo $auction['auction_name']; ?>"><?php echo $auction['auction_name']; ?></a></p>
+                    	<?php endforeach; ?>
+                	<?php else: ?>
+                    	<p class="text-center text-white"><?php echo __('No offers',GJMAA_TEXT_DOMAIN); ?></p>
+                	<?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-lg-6 topAuctions" id="last_minute_auctions">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                    	<h4><?php echo __('Last minute',GJMAA_TEXT_DOMAIN); ?></h4>
+                    </div>
+                    <div class="card-auctions">
+                    <?php if(!empty($oldest)): ?>
+                    	<?php foreach($oldest as $auction): ?>
+                    	<p><a class="text-white" href="<?php echo $auctionsHelper->getAuctionUrl($auction['id']); ?>" target="_blank" title="<?php echo $auction['auction_name']; ?>"><?php echo $auction['auction_name']; ?></a></p>
+                    	<?php endforeach; ?>
+                	<?php else: ?>
+                    	<p class="text-center text-white"><?php echo __('No offers',GJMAA_TEXT_DOMAIN); ?></p>
+                	<?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-lg-6 topAuctions" id="low_stock">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                    	<h4><?php echo __('Low stock',GJMAA_TEXT_DOMAIN); ?></h4>
+                    </div>
+                    <div class="card-auctions">
+                    	<?php if(!empty($lowStock)): ?>
+                        	<?php foreach($lowStock as $auction): ?>
+                        	<p><a class="text-white" href="<?php echo $auctionsHelper->getAuctionUrl($auction['id']); ?>" target="_blank" title="<?php echo $auction['auction_name']; ?>"><?php echo $auction['auction_name']; ?></a></p>
+                        	<?php endforeach; ?>
+                    	<?php else: ?>
+                        	<p class="text-center text-white"><?php echo __('No offers',GJMAA_TEXT_DOMAIN); ?></p>
+                    	<?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="clear"></div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="social-box facebook">
+	                <a href="https://facebook.com/grojanteam" target="_blank" title="<?php echo __('Grojan Team on Facebook',GJMAA_TEXT_DOMAIN); ?>">
+	                    <i class="fa fa-facebook"></i>
+	                </a>
+                </div>
+                <!--/social-box-->
+            </div>
+            <!--/.col-->
+
+
+            <div class="col-lg-4 col-md-6">
+                <div class="social-box twitter">
+	                <a href="https://twitter.com/grojanteam" target="_blank" title="<?php echo __('Grojan Team on Twitter',GJMAA_TEXT_DOMAIN); ?>">
+	                    <i class="fa fa-twitter"></i>
+                    </a>
+                </div>
+                <!--/social-box-->
+            </div>
+            <!--/.col-->
+
+            <div class="col-lg-4 col-md-6">
+                <div class="social-box wordpress">
+                	<a href="https://profiles.wordpress.org/grojanteam" target="_blank" title="<?php echo __('Grojan Team on WordPress Comunity',GJMAA_TEXT_DOMAIN); ?>">
+                    	<i class="fa fa-wordpress"></i>
+                    </a>
+                </div>
+                <!--/social-box-->
+            </div>
+            <!--/.col-->
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="social-box orange">
+                	<a href="https://wphocus.com/produkt/woocommerce-allegro-pro-integracja?utm_source=plugin&utm_medium=banner&utm_campaign=pre-order" target="_blank" title="WooCommerce Allegro PRO">
+                    	<i>WooCommerce Allegro PRO</i>
+                    </a>
+                </div>
+                <!--/social-box-->
+            </div>
+            <!--/.col-->
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="social-box twitter">
+                	<a href="https://www.paypal.com/donate/?token=kNStE0vpGB2nxIFGIBbszhEERPL1OTxSlmWxnjQxujpJQ9dzP7nh8cXxjQV8pENpSq0_tm&country.x=PL&locale.x=PL" target="_blank" title="<?php echo sprintf(__('Donate %s with paypal',GJMAA_TEXT_DOMAIN),'Grojan Team'); ?>">
+                    	<i class="fa fa-paypal"></i>
+                    </a>
+                </div>
+                <!--/social-box-->
+            </div>
+            <!--/.col-->
+
+            <div class="col-lg-4 col-md-6">
+                <div class="social-box wordpress">
+                	<a href="https://grojanteam.pl" target="_blank" title="<?php echo __('Grojan Team Site',GJMAA_TEXT_DOMAIN); ?>">
+                    	<i class="fa fa-globe"></i>
+                    </a>
+                </div>
+                <!--/social-box-->
+            </div>
+            <!--/.col-->
+        </div> <!-- .content -->
+    </div><!-- /#right-panel -->
+</div>

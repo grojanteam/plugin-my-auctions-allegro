@@ -1,0 +1,50 @@
+<?php 
+$auctions = isset($auctions) ? $auctions : [];
+$show_price = isset($show_price) ? $show_price : false;
+$show_time = isset($show_time) ? $show_time : false;
+$image_width = isset($image_width) ? $image_width : 200;
+$image_height = isset($image_height) ? $image_height : 150;
+?>
+<div id="outer_allegro" class="slidebox_right" style="top: 100px;">
+	<div id="center_allegro">
+		<div id="inner_allegro">
+			<div class="slidebox_image">
+				<div class="slidebox">
+					<div class="user-info">
+						<h2><?php echo $title ? : 'Allegro'; ?></h2>
+						<ul></ul>
+					</div>
+					<div class="inner-box"><?php 
+						if (! empty($auctions)):
+                            foreach ($auctions as $auction):
+                                $auctionId = $auction['auction_id'];
+                                $name = $auction['auction_name'];
+                                $images = json_decode($auction['auction_images']);
+                                $mainImage = isset($images[0]) ? $images[0] : '';
+                                $url = GJMAA::getHelper('auctions')->getAuctionUrl($auction['id']);
+                                $price = GJMAA::getHelper('auctions')->getAuctionPrice($auction['id']);
+                                $time = GJMAA::getHelper('auctions')->getAuctionTime($auction['id']); ?>
+                                <div class="collect_allegro_click item item-top"
+                                    data-auction-id="<?php echo $auctionId; ?>"
+                                    data-profile-id="<?php echo $profile_id; ?>">
+                                    <a class="image_allegro top" target="_blank"
+                                    href="<?php echo $url; ?>" title="<?php echo $name; ?>"
+                                    style="width: <?php echo $image_width; ?>px; height: <?php echo $image_height; ?>px;">
+                                    <img class="lozad" data-src="<?php echo $mainImage->url; ?>" style="width: <?php echo $image_width; ?>px; height: <?php echo $image_height; ?>px;" />
+                                    </a> <a class="image_allegro top" target="_blank"
+                                        href="<?php echo $url; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>
+                        			<?php if($show_price): ?><span class="price"><?php echo $price; ?></span><?php endif; ?>
+                        			<?php if($show_time): ?><span class="time"><?php echo $time; ?></span><?php endif; ?>
+								</div><?php
+                            endforeach;
+                        else:
+                        echo __('No offers',GJMAA_TEXT_DOMAIN);
+                        endif;
+                        ?>    
+					</div>
+					<div class="copyright"><?php echo __('Powered by',GJMAA_TEXT_DOMAIN); ?> <a href="https://grojanteam.pl" target="_blank">Grojan Team</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,337 +1,563 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Translation of Plugins - My auctions allegro FREE EDITION - Stable (latest release) in Polish
+# This file is distributed under the same license as the Plugins - My auctions allegro FREE EDITION - Stable (latest release) package.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-02 17:09+0100\n"
-"PO-Revision-Date: 2018-02-02 17:13+0100\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2019-02-08 20:17:01+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.0.6\n"
-"Last-Translator: \n"
-"Language: pl_PL\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: pl\n"
+"Project-Id-Version: Plugins - My auctions allegro FREE EDITION - Stable (latest release)\n"
 
-#: gj_myauctions_allegro.php:85 gj_myauctions_allegro.php:332
-msgid "My auctions allegro"
-msgstr "Moje aukcje allegro"
+#: core/translation.php:41
+msgid "Disconnect"
+msgstr "Rozłącz"
 
-#: gj_myauctions_allegro.php:87 gj_myauctions_allegro.php:328
-#: gj_myauctions_allegro.php:412 model/widget/auctions.php:34
-msgid "Settings of auctions"
-msgstr "Ustawienia aukcji"
+#: core/translation.php:40
+msgid "Connect"
+msgstr "Połącz"
 
-#: gj_myauctions_allegro.php:88 gj_myauctions_allegro.php:277
-#: gj_myauctions_allegro.php:335
-msgid "Import auctions"
-msgstr "Importuj aukcje"
+#: core/translation.php:39
+msgid "Create App"
+msgstr "Stwórz aplikację"
 
-#: gj_myauctions_allegro.php:89
-msgid "Plugin settings"
-msgstr "Ustawienia wtyczki"
+#: core/translation.php:37
+msgid "Edit profile"
+msgstr "Edytuj profil"
 
-#: gj_myauctions_allegro.php:147 gj_myauctions_allegro.php:235
-msgid "Settings was updated"
-msgstr "Ustawienia zostały zaktualizowane"
+#: core/translation.php:34
+msgid "Add settings"
+msgstr "Dodaj ustawienia"
 
-#: gj_myauctions_allegro.php:149 gj_myauctions_allegro.php:237
-msgid "Settings was not updated"
-msgstr "Ustawienia nie zostały zaktualizowane"
+#: core/translation.php:33
+msgid "Add profile"
+msgstr "Dodaj profil"
 
-#: gj_myauctions_allegro.php:254
-msgid "Settings was deleted"
-msgstr "Ustawienia zostały usunięte"
+#: core/translation.php:31
+msgid "Password"
+msgstr "Hasło"
 
-#: gj_myauctions_allegro.php:256
-msgid "Settings was not deleted"
-msgstr "Ustawienia nie zostały usunięte"
+#: core/translation.php:30
+msgid "Sandbox Mode"
+msgstr "Środowisko testowe"
 
-#: gj_myauctions_allegro.php:260 gj_myauctions_allegro.php:436
-msgid "Add"
-msgstr "Dodaj"
+#: core/translation.php:29
+msgid "Setting Site"
+msgstr "Ustawienia strony"
 
-#: gj_myauctions_allegro.php:297
-msgid "Get Full Version"
-msgstr "Kup pełną wersję"
+#: core/translation.php:24
+msgid "Progress"
+msgstr "Postęp"
 
-#: gj_myauctions_allegro.php:304
-#, php-format
-msgid "Something went wrong! %s"
-msgstr "Coś poszło nie tak! %s"
+#: core/translation.php:19
+msgid "Donate %s with paypal"
+msgstr "Wesprzyj %s poprzez paypal"
 
-#: gj_myauctions_allegro.php:322
-msgid "Add new settings"
-msgstr "Dodaj nowe ustawienia"
+#: core/translation.php:18
+msgid "Grojan Team on WordPress Community"
+msgstr "Grojan Team na WordPress"
 
-#: gj_myauctions_allegro.php:324
+#: core/translation.php:17
+msgid "Grojan Team Site"
+msgstr "Strona Grojan Team"
+
+#: core/translation.php:16
+msgid "Grojan Team on Twitter"
+msgstr "Grojan Team na Twiterze"
+
+#: core/translation.php:15
+msgid "Grojan Team on Facebook"
+msgstr "Grojan Team na Facebook'u"
+
+#: core/translation.php:14
+msgid "Low stock"
+msgstr "Niski stan"
+
+#: core/translation.php:13
+msgid "Last minute"
+msgstr "Ostatnia minuta"
+
+#: core/translation.php:12
+msgid "Newest"
+msgstr "Najnowsze"
+
+#: core/translation.php:11
+msgid "The most popular"
+msgstr "Najpopularniejsze"
+
+#: core/translation.php:10
+msgid "Total visits"
+msgstr "Łącznie odwiedzin"
+
+#: core/translation.php:9
+msgid "Total clicks"
+msgstr "Łącznie kliknięć"
+
+#: core/translation.php:8
+msgid "Total auctions"
+msgstr "Łącznie aukcji"
+
+#: core/translation.php:7
+msgid "Total profiles"
+msgstr "Łącznie profili"
+
+#: core/translation.php:6
+msgid "Plugin version"
+msgstr "Wersja wtyczki"
+
+#: core/translation.php:5
+msgid "WordPress version"
+msgstr "Wersja WordPress'a"
+
+#: src/helper/profiles.php:43
+msgid "Type number of auctions"
+msgstr "Wpisz ilość aukcji"
+
+#: src/helper/profiles.php:86
+msgid "Time of last synchronization"
+msgstr "Czas ostatniej synchronizacji"
+
+#: src/helper/profiles.php:79
+msgid "Type here query that you want to find"
+msgstr "Wpisz tutaj frazę, którą chcesz znaleźć"
+
+#: core/translation.php:4
+msgid "PHP version"
+msgstr "Wersja PHP"
+
+#: core/functions.php:570
+msgid "Every minute"
+msgstr "Co minutę"
+
+#: src/controller/settings.php:130
+msgid "Please check your details and correct."
+msgstr "Proszę sprawdź swoje szczegóły i popraw."
+
+#: src/controller/settings.php:121 src/controller/settings.php:132
+msgid "API successfully connected."
+msgstr "Interfejs API został pomyślnie podłączony."
+
+#: src/controller/settings.php:114
+msgid "In your new application copy and paste Redirect URI"
+msgstr "W twojej nowej aplikacji skopiuj i wklej adres przekierowań"
+
+#: src/controller/settings.php:113
+msgid "Fill required fields and save."
+msgstr "Wypełnij wymagane pola i zapisz."
+
+#: src/controller/settings.php:113
+msgid "Click on \"Create App\" to get Client ID, Client Secret."
+msgstr "Kliknij \"Stwórz aplikację\" aby pobrać Client ID, Client Secret."
+
+#: src/controller/settings.php:107
+msgid "Click on \"Connect\" to get Client Token."
+msgstr "Kliknij \"Połącz\" aby pobrać Token."
+
+#: src/controller/settings.php:90
+msgid "Please fill all required fields and save"
+msgstr "Proszę wypełnij wszystkie wymagane pola i zapisz."
+
+#: core/translation.php:20
+msgid "Dashboard"
+msgstr "Kokpit"
+
+#: src/controller/profiles.php:40
+msgid "Profiles"
+msgstr "Profile"
+
+#: src/controller/auctions.php:76
+msgid "Wrong Auction ID or auction does not exist."
+msgstr "Błędne ID aukcji lub aukcja nie istnieje."
+
+#: src/controller/auctions.php:32
+msgid "Auctions"
+msgstr "Aukcje"
+
+#: src/controller/categorymap.php:46
+msgid "Map category"
+msgstr "Mapowanie kategorii"
+
+#: src/controller/import.php:31
+msgid "No profile selected."
+msgstr "Nie wybrano profilu."
+
+#: src/service/import.php:107
+msgid "Can't connect to API"
+msgstr "Nie można połączyć się z interfejsem API"
+
+#: src/service/import.php:95
+msgid "Profile not set"
+msgstr "Nie ustawiony profil"
+
+#: src/service/import.php:34
+msgid "No set required parameters"
+msgstr "Nie ustawiono wymaganych parametrów"
+
+#: src/helper/profiles.php:93
+msgid "Choose that you want import auctions from allegro to WooCommerce"
+msgstr "Wybierz czy chcesz importować aukcje z allegro do WooCommerce"
+
+#: src/helper/profiles.php:70
+msgid "Type here allegro login of user that you want to import (ex. grojanteam)"
+msgstr "Wpisz tutaj login użytkownika, którego chcesz zaimportować (np. grojanteam)"
+
+#: src/helper/profiles.php:63
+msgid "Choose type of sorting that will be imported"
+msgstr "Wybierz typ sortowania do importu"
+
+#: src/helper/profiles.php:51 src/controller/categories.php:93
+msgid "Choose allegro category that will be filtered during import"
+msgstr "Wybierz kategorię allegro z której ma importować."
+
+#: src/helper/profiles.php:36
+msgid "Choose type of auction that will be imported"
+msgstr "Wybierz typ aukcji jakie ma importować"
+
+#: src/helper/profiles.php:27
+msgid "Type here your custom profile name"
+msgstr "Wpisz tutaj twoją nazwę profilu"
+
+#: src/helper/profiles.php:20
+msgid "Choose API settings that you will used to import"
+msgstr "Wybierz ustawienia API z jakiego będziesz korzystać do importu"
+
+#: src/helper/auctions.php:136
+msgid "Auction does not exist"
+msgstr "Aukcja nie istnieje"
+
+#: src/helper/categorymap.php:20
+msgid "Choose allegro category that will be mapped with WooCommerce Category"
+msgstr "Wybierz kategorie allegro do mapowania z kategorią WooCommerce"
+
+#: src/helper/import.php:53
+msgid "Selected profile does not exist."
+msgstr "Wybrany profil nie istnieje"
+
+#: src/table/settings.php:28
+msgid "Sandbox"
+msgstr "Środowisko testowe"
+
+#: src/table/settings.php:27
+msgid "Login Allegro"
+msgstr "Login Allegro"
+
+#: src/table/profiles.php:26
+msgid "Type"
+msgstr "Typ"
+
+#: src/table/profiles.php:24
+msgid "API"
+msgstr "API"
+
+#: src/table/auctions.php:38
+msgid "In woocommerce?"
+msgstr "W woocommerce?"
+
+#: src/table/auctions.php:37
+msgid "Visits"
+msgstr "Odwiedzin"
+
+#: src/table/auctions.php:36
+msgid "Clicks"
+msgstr "Kliknięć"
+
+#: src/table/auctions.php:35
+msgid "Time"
+msgstr "Czas"
+
+#: src/table/auctions.php:34
+msgid "Seller"
+msgstr "Sprzedawca"
+
+#: src/table/auctions.php:32
+msgid "Quantity"
+msgstr "Ilość"
+
+#: src/table/auctions.php:31
+msgid "Price (Bid)"
+msgstr "Cena (licytacja)"
+
+#: src/table/auctions.php:28
+msgid "Profile"
+msgstr "Profil"
+
+#: src/table/auctions.php:27
+msgid "Auction ID"
+msgstr "ID aukcji"
+
+#: lib/rest/api/auth/code.php:18
+msgid "Missing client id argument"
+msgstr "Brakujący argument Client ID"
+
+#: lib/rest/api/auth/refresh.php:18
+msgid "Refresh Token"
+msgstr "Odśwież Token"
+
+#: lib/rest/api/auth/token.php:18
+msgid "Authorization Code"
+msgstr "Kod autoryzacyjny"
+
+#: lib/rest/api/auth/token.php:18 lib/rest/api/auth/refresh.php:18
+msgid "Client ID"
+msgstr "Client ID"
+
+#: lib/rest/api/auth/token.php:18 lib/rest/api/auth/refresh.php:18
+msgid "Client Secret"
+msgstr "Client Secret"
+
+#: lib/rest/api/abstract.php:162
+msgid "Unexpected error: %s"
+msgstr "Nieoczekiwany błąd: %s"
+
+#: lib/rest/api/auth/token.php:18 lib/rest/api/auth/refresh.php:18
+msgid "Missing arguments: %s or %s or %s"
+msgstr "Brakujące argumenty: %s or %s or %s"
+
+#: src/source/allegro/sort.php:18
+msgid "Price with delivery (Descending)"
+msgstr "Cena z dostawą (Malejąco)"
+
+#: src/source/allegro/sort.php:17
+msgid "Price with delivery (Ascending)"
+msgstr "Cena z dostawą (Rosnąco)"
+
+#: src/table/profiles.php:31
+msgid "Last synchronization"
+msgstr "Ostatnia synchronizacja"
+
+#: core/functions.php:566
+msgid "Every 5 minutes"
+msgstr "Co 5 minut"
+
+#: src/table/auctions.php:30
+msgid "Price (Buy Now)"
+msgstr "Cena (Kup Teraz)"
+
+#: src/table/categorymap.php:21
+msgid "WooCommerce Category"
+msgstr "Kategoria WooCommerce"
+
+#: src/table/categorymap.php:20
+msgid "Allegro Category"
+msgstr "Kategoria Allegro"
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/plugins/my-auctions-allegro-free-edition"
+msgstr "https://pl.wordpress.org/plugins/my-auctions-allegro-free-edition"
+
+#: core/translation.php:21
+msgid "Show on Allegro"
+msgstr "Pokaż na Allegro"
+
+#: core/functions.php:593
+msgid "%1$s developed by %2$s. If you like this plugin, please rate us on %3$s. Thank you."
+msgstr "%1$s stworzone przez %2$s. Jeśli lubisz ten plugin, oceń nas na %3$s. Dziękuje."
+
+#. Description of the plugin
+msgid "Plug-in display auctions from popular polish auction website called allegro.pl, also from 1.7 version you can import basic information from auctions to WooCommerce"
+msgstr "Wtyczka służy do wyświetlania aukcji z popularnego portalu aukcyjnego zwanego allegro.pl, dodatkowo od wersji 1.7 możesz zaimportować podstawowe dane aukcji do WooCommerce"
+
+#. Author URI of the plugin
+msgid "https://www.grojanteam.pl"
+msgstr "https://www.grojanteam.pl"
+
+#. Author of the plugin
+msgid "Grojan Team"
+msgstr "Grojan Team"
+
+#. Plugin Name of the plugin
+msgid "My auctions allegro FREE EDITION"
+msgstr "Moje aukcje allegro DARMOWA EDYCJA"
+
+#: core/translation.php:38
 msgid "Edit settings"
 msgstr "Edytuj ustawienia"
 
-#: gj_myauctions_allegro.php:416 model/widget/auctions.php:38
-msgid "Title"
-msgstr "Tytuł"
+#: src/controller/import.php:59
+msgid "Something went wrong: %s"
+msgstr "Coś poszło nie tak: %s"
 
-#: gj_myauctions_allegro.php:420 model/fields/fields_form.php:35
-#: model/tables/settings.php:16 model/widget/auctions.php:42
-msgid "Count of auctions"
-msgstr "Liczba aukcji"
+#: core/translation.php:3
+msgid "Add"
+msgstr "Dodaj"
 
-#: gj_myauctions_allegro.php:424 model/fields/fields_form.php:36
-#: model/tables/settings.php:17 model/widget/auctions.php:46
-msgid "Show price"
-msgstr "Pokaż cenę"
+#: src/controller/settings.php:44
+msgid "Plugin settings"
+msgstr "Ustawienia wtyczki"
 
-#: gj_myauctions_allegro.php:428 model/fields/fields_form.php:37
-#: model/tables/settings.php:18 model/widget/auctions.php:50
-msgid "Show time"
-msgstr "Pokaż czas"
+#: src/controller/import.php:14 src/controller/import.php:19
+msgid "Import auctions"
+msgstr "Importuj aukcje"
 
-#: gj_myauctions_allegro.php:432 model/widget/auctions.php:54
-msgid "Show details"
-msgstr "Pokaż szczegóły"
+#: core/translation.php:2
+msgid "My auctions allegro"
+msgstr "Moje aukcje allegro"
 
-#: gj_myauctions_allegro.php:436
-msgid "Cancel"
-msgstr "Anuluj"
-
-#: gj_myauctions_allegro.php:494
-msgid "Allegro API Connected Successfully"
-msgstr "Połączenie Allegro API zostało nawiązane pomyślnie"
-
-#: gj_myauctions_allegro.php:503
-#, php-format
-msgid "Error: %s"
-msgstr "Błąd: %s"
-
-#: model/core/auction_item.php:52 model/core/auction_item.php:54
-#: model/core/my_auctions_allegro.php:233
-msgid "Auctions was imported"
-msgstr "Aukcje zostały zaimportowane"
-
-#: model/core/my_auctions_allegro.php:250
-msgid "Time to end of auction (Ascending)"
-msgstr "Czas do końca aukcji (Rosnąco)"
-
-#: model/core/my_auctions_allegro.php:251
-msgid "Time to end of auction (Descending)"
-msgstr "Czas do końca aukcji (Malejąco)"
-
-#: model/core/my_auctions_allegro.php:252
-msgid "Count of offers (Ascending)"
-msgstr "Liczba ofert (Rosnąco)"
-
-#: model/core/my_auctions_allegro.php:253
-msgid "Count of offers (Descending)"
-msgstr "Liczba ofert (Malejąco)"
-
-#: model/core/my_auctions_allegro.php:254
-msgid "Current price (Ascending)"
-msgstr "Aktualna cena (Rosnąco)"
-
-#: model/core/my_auctions_allegro.php:255
-msgid "Current price (Descending)"
-msgstr "Aktualna cena (Malejąco)"
-
-#: model/core/my_auctions_allegro.php:256
-msgid "Name of auction (Ascending)"
-msgstr "Nazwa aukcji (Rosnąco)"
-
-#: model/core/my_auctions_allegro.php:257
-msgid "Name of auction (Descending)"
-msgstr "Nazwa aukcji (Malejąco)"
-
-#: model/core/my_auctions_allegro.php:258
-msgid "Time of auction create (Ascending)"
-msgstr "Czas stworzenia aukcji (Rosnąco)"
-
-#: model/core/my_auctions_allegro.php:259
-msgid "Time of auction create (Descending)"
-msgstr "Czas stworzenia aukcji (Malejąco)"
-
-#: model/core/my_auctions_allegro.php:278
-msgid "Back"
-msgstr "Wstecz"
-
-#: model/core/my_auctions_allegro.php:328
-msgid "No"
-msgstr "Nie"
-
-#: model/core/my_auctions_allegro.php:329
-msgid "Yes"
-msgstr "Tak"
-
-#: model/core/my_auctions_allegro.php:351
-msgid "My auctions"
-msgstr "Moje aukcje"
-
-#: model/core/my_auctions_allegro.php:352
-msgid "Search"
-msgstr "Szukaj"
-
-#: model/core/my_auctions_allegro.php:353
-msgid "Auctions of user"
-msgstr "Aukcje użytkownika"
-
-#: model/core/my_auctions_allegro.php:361
-msgid "Block"
-msgstr "Blok"
-
-#: model/core/my_auctions_allegro.php:362
-msgid "Slidebox"
-msgstr "Panel boczny"
-
-#: model/core/my_auctions_allegro.php:442
-msgid "Details"
-msgstr "Szczegóły"
-
-#: model/core/my_auctions_allegro.php:447
-msgid "No offers"
-msgstr "Brak ofert"
-
-#: model/fields/fields_form.php:22
-msgid "Basic settings"
-msgstr "Podstawowe ustawienia"
-
-#: model/fields/fields_form.php:23 model/fields/fields_form.php:57
-#: model/tables/settings.php:11
-msgid "Site"
-msgstr "Strona"
-
-#: model/fields/fields_form.php:24 model/tables/settings.php:12
-msgid "Type of auctions"
-msgstr "Typ aukcji"
-
-#: model/fields/fields_form.php:27
-msgid "Auction import settings"
-msgstr "Ustawienia importu aukcji"
-
-#: model/fields/fields_form.php:28 model/tables/settings.php:14
-msgid "Category"
-msgstr "Kategoria"
-
-#: model/fields/fields_form.php:29 model/tables/settings.php:15
-msgid "Sort"
-msgstr "Sortowanie"
-
-#: model/fields/fields_form.php:30 model/tables/settings.php:77
-msgid "User"
-msgstr "Użytkownik"
-
-#: model/fields/fields_form.php:31
-msgid "Query"
-msgstr "Fraza"
-
-#: model/fields/fields_form.php:34
-msgid "Additional settings"
-msgstr "Dodatkowe ustawienia"
-
-#: model/fields/fields_form.php:38
-msgid "Show copyright"
-msgstr "Pokaż autora"
-
-#: model/fields/fields_form.php:56
-msgid "Allegro API Connect"
-msgstr "Połączenie Allegro API"
-
-#: model/fields/fields_form.php:58
-msgid "API Key"
-msgstr "Klucz API"
-
-#: model/fields/fields_form.php:59
-msgid "Allegro User"
-msgstr "Użytkownik Allegro"
-
-#: model/fields/fields_form.php:60
-msgid "Allegro Password"
-msgstr "Hasło Allegro"
-
-#: model/fields/fields_form.php:68
-msgid "Save"
-msgstr "Zapisz"
-
-#: model/fields/fields_form.php:81 model/fields/fields_form.php:92
-#: model/fields/fields_import_form.php:18
-msgid "Choose"
-msgstr "Wybierz"
-
-#: model/fields/fields_import_form.php:23
-#, php-format
-msgid "Query: %s"
-msgstr "Fraza: %s"
-
-#: model/fields/fields_import_form.php:36
-msgid "Import details?"
-msgstr "Importować szczegóły?"
-
-#: model/fields/fields_import_form.php:37
-msgid "Step"
-msgstr "Krok"
-
-#: model/fields/fields_import_form.php:38
-msgid "Processing"
-msgstr "Przetwarzanie"
-
-#: model/fields/fields_import_form.php:39
-msgid "Imported auctions"
-msgstr "Zaimportowane aukcje"
-
-#: model/fields/fields_import_form.php:40
-msgid "All auctions"
-msgstr "Wszystkie aukcje"
-
-#: model/fields/fields_import_form.php:46
-msgid "Submit"
-msgstr "Wyślij"
-
-#: model/service/auctions.php:55
-msgid "No auctions to import"
-msgstr "Brak aukcji do importu"
-
-#: model/tables/settings.php:10 model/tables/settings.php:72
-msgid "ID"
-msgstr "ID"
-
-#: model/tables/settings.php:13
-msgid "User allegro"
-msgstr "Użytkownik allegro"
-
-#: model/tables/settings.php:19
-msgid "Action"
-msgstr "Akcja"
-
-#: model/tables/settings.php:58
-msgid "Edit"
-msgstr "Edytuj"
-
-#: model/tables/settings.php:58
-msgid "Delete"
-msgstr "Usuń"
-
-#: model/tables/settings.php:74
+#: src/table/auctions.php:29 src/table/profiles.php:25
+#: src/table/settings.php:25
 msgid "Name"
 msgstr "Nazwa"
 
-#: model/tables/settings.php:75
-msgid "Price"
-msgstr "Cena"
+#: core/translation.php:26
+msgid "Delete"
+msgstr "Usuń"
 
-#: model/tables/settings.php:76
-msgid "End auction"
-msgstr "Koniec aukcji"
+#: core/translation.php:25
+msgid "Edit"
+msgstr "Edytuj"
 
-#: model/widget/auctions.php:7
-msgid "Allegro Widget"
-msgstr "Panel boczny Allegro"
+#: src/table/auctions.php:39 src/table/profiles.php:32
+#: src/table/settings.php:29
+msgid "Action"
+msgstr "Akcja"
 
-#: model/fields/fields_form.php:42
-msgid "Import to WooCommerce"
-msgstr "Zaimportuj do WooCommerce"
+#: src/table/categorymap.php:19 src/table/auctions.php:26
+#: src/table/profiles.php:23 src/table/settings.php:24
+msgid "ID"
+msgstr "ID"
 
-#: model/tables/settings.php:23
-msgid "WooCommerce"
-msgstr "WooCommerce"
+#: src/controller/import.php:48
+msgid "No auctions to import"
+msgstr "Brak aukcji do importu"
+
+#: core/translation.php:23
+msgid "Step"
+msgstr "Krok"
+
+#: src/controller/categories.php:58
+msgid "Choose"
+msgstr "Wybierz"
+
+#: core/translation.php:32
+msgid "Save"
+msgstr "Zapisz"
+
+#: core/translation.php:36
+msgid "Count of auctions"
+msgstr "Liczba aukcji"
+
+#: src/table/profiles.php:30
+msgid "Query"
+msgstr "Fraza"
+
+#: src/table/profiles.php:29
+msgid "User"
+msgstr "Użytkownik"
+
+#: src/table/profiles.php:28
+msgid "Sort"
+msgstr "Sortowanie"
+
+#: src/table/auctions.php:33 src/table/profiles.php:27
+msgid "Category"
+msgstr "Kategoria"
+
+#: core/translation.php:35
+msgid "Type of auctions"
+msgstr "Typ aukcji"
+
+#: src/table/settings.php:26
+msgid "Site"
+msgstr "Strona"
+
+#: src/source/allegro/type.php:11
+msgid "Auctions of user"
+msgstr "Aukcje użytkownika"
+
+#: src/source/allegro/type.php:10 core/translation.php:22
+msgid "Search"
+msgstr "Szukaj"
+
+#: src/widget/auctions.php:8 src/source/allegro/type.php:9
+msgid "My auctions"
+msgstr "Moje aukcje"
+
+#: src/source/yesno.php:7 core/translation.php:27
+msgid "Yes"
+msgstr "Tak"
+
+#: src/source/yesno.php:6 core/translation.php:28
+msgid "No"
+msgstr "Nie"
+
+#: src/service/woocommerce.php:374 src/controller/categories.php:58
+msgid "Back"
+msgstr "Wstecz"
+
+#: src/source/allegro/sort.php:16
+msgid "Time of auction create (Descending)"
+msgstr "Czas stworzenia aukcji (Malejąco)"
+
+#: src/source/allegro/sort.php:15
+msgid "Time of auction create (Ascending)"
+msgstr "Czas stworzenia aukcji (Rosnąco)"
+
+#: src/source/allegro/sort.php:14
+msgid "Name of auction (Descending)"
+msgstr "Nazwa aukcji (Malejąco)"
+
+#: src/source/allegro/sort.php:13
+msgid "Name of auction (Ascending)"
+msgstr "Nazwa aukcji (Rosnąco)"
+
+#: src/source/allegro/sort.php:12
+msgid "Current price (Descending)"
+msgstr "Aktualna cena (Malejąco)"
+
+#: src/source/allegro/sort.php:11
+msgid "Current price (Ascending)"
+msgstr "Aktualna cena (Rosnąco)"
+
+#: src/source/allegro/sort.php:10
+msgid "Count of offers (Descending)"
+msgstr "Liczba ofert (Malejąco)"
+
+#: src/source/allegro/sort.php:9
+msgid "Count of offers (Ascending)"
+msgstr "Liczba ofert (Rosnąco)"
+
+#: src/source/allegro/sort.php:8
+msgid "Time to end of auction (Descending)"
+msgstr "Czas do końca aukcji (Malejąco)"
+
+#: src/source/allegro/sort.php:7
+msgid "Time to end of auction (Ascending)"
+msgstr "Czas do końca aukcji (Rosnąco)"
+
+#: src/controller/import.php:46
+msgid "Auctions was imported"
+msgstr "Aukcje zostały zaimportowane"
+
+#: lib/webapi.php:336
+msgid "MOD_GJALLEGRO_HOURS"
+msgstr "Godziny"
+
+#: lib/webapi.php:333
+msgid "MOD_GJALLEGRO_MINUTES"
+msgstr "Minuty"
+
+#: lib/webapi.php:327 lib/webapi.php:339
+msgid "MOD_GJALLEGRO_DAYS"
+msgstr "Dni"
+
+#: lib/webapi.php:324
+msgid "MOD_GJALLEGRO_HOURS2"
+msgstr "Godzin"
+
+#: lib/webapi.php:321
+msgid "MOD_GJALLEGRO_MINUTES2"
+msgstr "Minut"
+
+#: lib/webapi.php:313
+msgid "MOD_GJALLEGRO_DAY"
+msgstr "Dzień"
+
+#: lib/webapi.php:310
+msgid "MOD_GJALLEGRO_HOUR"
+msgstr "Godzina"
+
+#: lib/webapi.php:307
+msgid "MOD_GJALLEGRO_MINUTE"
+msgstr "Minuta"
