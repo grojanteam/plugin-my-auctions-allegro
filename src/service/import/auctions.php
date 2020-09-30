@@ -66,16 +66,6 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import
                 $result = $this->recalculateProgressData($result, $countOfAuctions);
             }
         } else {
-            $result['auctions'][] = [
-                'auction_id' => $auctionId,
-                'auction_profile_id' => $this->getProfile()->getId(),
-                'auction_in_woocommerce' => $auctionId ? 1 : 2
-            ];
-            
-            $result['all_auctions'] = $this->getProfile()->getData('profile_all_auctions');
-            $result = $this->recalculateProgressData($result, 1);
-            
-            
              $auctionDetails = [];
 
              $product = [];
@@ -108,8 +98,14 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import
                  true
              );
 
-             $result['all_auctions'] = $this->getProfile()->getData('profile_all_auctions');
-             $result = $this->recalculateProgressData($result, 1);
+	        $result['auctions'][] = [
+		        'auction_id' => $auctionId,
+		        'auction_profile_id' => $this->getProfile()->getId(),
+		        'auction_in_woocommerce' => $auctionId ? 1 : 2
+	        ];
+
+	        $result['all_auctions'] = $this->getProfile()->getData('profile_all_auctions');
+	        $result = $this->recalculateProgressData($result, 1);
         }
 
         return $result;

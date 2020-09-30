@@ -676,6 +676,14 @@ class GJMAA
 		    return false;
 	    }
 
+	    if($settingIds = $helper->checkForNotConnectedAccounts()) {
+	    	echo '<div class="notice notice-error">';
+	    	foreach($settingIds as $settingId) {
+			    echo '<p style="font-size:1.5em;">' . __(sprintf('Please refresh manually connection to <strong>ALLEGRO</strong>. Token is expired <a href="%s" target="_blank">click here</a> and refresh token.', admin_url( 'admin.php?page=gjmaa_settings&action=edit&setting_id='.$settingId)), GJMAA_TEXT_DOMAIN) . '</p>';
+		    }
+	    	echo '</div>';
+	    }
+
 	    return true;
     }
 }

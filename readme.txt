@@ -127,6 +127,10 @@ Please immediately update your plugin to minimum v2.4.0
 
 = 2.5.0 =
 Stop support older version than PHP 7.2
+Stop support Web API
+More information about lost connections
+Rewrite import to WooCommerce
+EAN as first is taken to connect with WooCommerce Data (if no EAN -> SKU will be as always auction number)
 
 = 2.4.0 = 
 Very Important Notice for users that use import type "Auctions of user", please update it immediately and go through tips in profile seller ID field!

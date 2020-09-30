@@ -172,7 +172,11 @@ class GJMAA_Helper_Settings {
 		}
 
 		if ( $this->isExpiredToken( $settings->getData() ) ) {
-			$this->refreshToken( $settings );
+			try {
+				$this->refreshToken( $settings );
+			} catch (Exception $exception) {
+				return false;
+			}
 		}
 
 		return true;

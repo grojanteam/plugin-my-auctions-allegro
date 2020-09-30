@@ -42,6 +42,36 @@ class GJMAA_Helper_Dashboard {
 	    $profiles = GJMAA::getModel('profiles');
 	    return $profiles->getAllProfileErrors();
 	}
+
+	public function checkForNotConnectedAccounts()
+	{
+		/** @var GJMAA_Helper_Settings $helper */
+		$helper = GJMAA::getHelper('settings');
+
+		/** @var GJMAA_Model_Settings $model */
+		$model = GJMAA::getModel('settings');
+
+		$ids = $model->getAllIds();
+
+		$notConnected = [];
+
+		foreach($ids as $id) {
+			$model->unsetData();
+			$settings = $model->load($id);
+
+			if($helper->isConnected($settings)) {
+				continue;
+			}
+
+			if($helper->checkWebAPIConnection($settings->getData())) {
+				continue;
+			}
+
+			$notConnected[] = $id;
+		}
+
+		return $notConnected;
+	}
 }
 
 ?>

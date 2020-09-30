@@ -110,6 +110,13 @@ class GJMAA_Service_Import
             $this->makeRequest();
 	        $auctionId = null;
 	        if ($this->getProfileStep() == 2) {
+	        	if($this->getProfile()->getData('profile_type') !== 'my_auctions') {
+	        		$this->getProfile()->setData('profile_to_woocommerce', 0);
+	        		$this->getProfile()->setData('profile_import_step', 1);
+	        		$this->getProfile()->setData('profile_all_auctions', 0);
+	        		$this->getProfile()->save();
+			        throw new Exception(__('Allegro WEB API is not supported anymore. You can\'t collect auctions of other user as WooCommerce Products. Switch your profile to `My auctions` and import only your auctions as WooCommerce Products.', GJMAA_TEXT_DOMAIN));
+		        }
 	            $auctionId = $this->getAuctionIdByProfile();
             }
             $response = $this->sendRequest($auctionId);
@@ -133,7 +140,10 @@ class GJMAA_Service_Import
                 ->getData('setting_client_token'));
             $this->client->setSandboxMode($this->getSettings()
                 ->getData('setting_is_sandbox'));
-            $this->client->setAuctionId($auctionId);
+
+            if(method_exists($this->client, 'setAuctionId')) {
+	            $this->client->setAuctionId( $auctionId );
+            }
 
             $response = $this->client->execute();
 
@@ -304,6 +314,7 @@ class GJMAA_Service_Import
         } else {
             $auctionDetails = $response->arrayItemListInfo->item;
 
+        	/** @var GJMAA_Service_Woocommerce $serviceWooCommerce */
             $serviceWooCommerce = GJMAA::getService('woocommerce');
             $serviceWooCommerce->setSettingId($this->getSettings()
                 ->getId());
