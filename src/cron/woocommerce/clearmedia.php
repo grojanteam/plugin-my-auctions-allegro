@@ -12,6 +12,7 @@ class GJMAA_Cron_Woocommerce_Clearmedia
     
     public function execute() 
     {
+    	return;
         $wooCommerceService = GJMAA::getService('woocommerce');
         if(!$wooCommerceService->isEnabled()) {
             return;
