@@ -184,7 +184,7 @@ class GJMAA_Helper_Settings {
 	 * @return mixed
 	 * @throws Exception
 	 */
-	public function refreshToken( $settings ) {
+	public function refreshToken( GJMAA_Model_Settings $settings ) {
 		try {
 			/** @var GJMAA_Lib_Rest_Api_Auth_Refresh $restLibConnect */
 			$restLibConnect = GJMAA::getLib( 'rest_api_auth_refresh' );

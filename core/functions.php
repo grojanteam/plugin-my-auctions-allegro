@@ -144,7 +144,9 @@ class GJMAA
         extract($variables);
         $view = strtolower($view);
         $view = str_replace('_', '/', $view);
-        include (GJMAA_PATH . 'views/' . $type . '/' . $view);
+        if(file_exists(GJMAA_PATH . 'views/' . $type . '/' . $view)) {
+	        include( GJMAA_PATH . 'views/' . $type . '/' . $view );
+        }
     }
 
     /**
@@ -152,7 +154,7 @@ class GJMAA
      * @param string $instance
      * @param string $type
      * @param bool $rec
-     * @return bool
+     * @return mixed
      */
     public static function getInstance($instance, $type = 'Model', $rec = false)
     {
@@ -171,8 +173,7 @@ class GJMAA
 
     /**
      *
-     * @param
-     *            $string
+     * @param string $string
      * @param string $type
      * @return string
      */
@@ -188,8 +189,7 @@ class GJMAA
 
     /**
      *
-     * @param
-     *            $string
+     * @param string $string
      * @param string $type
      * @return string
      */
@@ -204,9 +204,11 @@ class GJMAA
         return $instancePath . '/' . str_replace('_', '/', $string) . '.php';
     }
 
-    /**
-     * method to install all needed database tables
-     */
+	/**
+	 * method to install all needed database tables
+	 *
+	 * @throws Exception
+	 */
     public static function install()
     {
         $settingsModel = self::getModel('settings');
@@ -294,26 +296,24 @@ class GJMAA
      */
     public static function initPlugin()
     {
-        add_action('admin_menu', array(
-            'GJMAA',
-            'initPluginMenu'
-        ));
+    	if(self::checkCompatibility()) {
 
-        self::addTranslations();
-        self::initStaticAjaxHooks();
-        self::initShortcodes();
-        self::initCron();
-//         self::addHooks();
-        self::checkInstallation();
+		    add_action( 'admin_menu', array(
+			    'GJMAA',
+			    'initPluginMenu'
+		    ) );
+
+		    self::addTranslations();
+		    self::initStaticAjaxHooks();
+		    self::initShortcodes();
+		    self::initCron();
+		    self::checkInstallation();
+	    }
     }
-    
-//     public static function addHooks()
-//     {
-//         self::getInstance('media','Hook');
-//     }
     
     public static function checkInstallation()
     {
+    	/** @var GJMAA_Model_Settings $settingsModel */
         $settingsModel = self::getModel('settings');
         $tableName = $settingsModel->getTable();
         if(!$settingsModel->tableExists($tableName)){
@@ -332,6 +332,7 @@ class GJMAA
         $allControllers = self::getAllControllers();
 
         foreach ($allControllers as $controllerName) {
+        	/** @var GJMAA_Controller $controller */
             $controller = self::getController($controllerName);
             if($controller){
                 $controller->addSubmenu();
@@ -409,13 +410,17 @@ class GJMAA
 
                 // css styles
                 wp_enqueue_style('gjmaa_admin_help', GJMAA_URL . 'assets/css/admin/help.css');
+                break;
             case 'page_gjmaa_profiles':
+	        case 'page_gjmaa_categorymap':
                 // js scripts
                 wp_enqueue_script('gjmaa_admin_help', GJMAA_URL . 'assets/js/admin/help.js', [
                     'jquery-ui-tooltip',
                     'jquery'
                 ]);
-                wp_enqueue_script('gjmaa_admin_category', GJMAA_URL . 'assets/js/admin/category_ajax.js');
+                wp_enqueue_script('gjmaa_admin_category', GJMAA_URL . 'assets/js/admin/category_ajax.js', [
+                	'underscore'
+                ]);
 
                 // css styles
                 wp_enqueue_style('gjmaa_admin_help', GJMAA_URL . 'assets/css/admin/help.css');
@@ -426,17 +431,6 @@ class GJMAA
 
                 // css styles
                 wp_enqueue_style('gjmaa_admin_template', GJMAA_URL . 'assets/css/admin/template.css');
-                break;
-            case 'page_gjmaa_categorymap':
-                // js scripts
-                wp_enqueue_script('gjmaa_admin_help', GJMAA_URL . 'assets/js/admin/help.js', [
-                    'jquery-ui-tooltip',
-                    'jquery'
-                ]);
-                wp_enqueue_script('gjmaa_admin_category', GJMAA_URL . 'assets/js/admin/category_ajax.js');
-
-                // css styles
-                wp_enqueue_style('gjmaa_admin_help', GJMAA_URL . 'assets/css/admin/help.css');
                 break;
         }
         wp_enqueue_style('gjmaa_admin_font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');
@@ -456,10 +450,14 @@ class GJMAA
         ], 1);
     }
 
+	/**
+	 * @return bool
+	 */
     public static function initStaticAjaxHooks()
     {
         if (isset($_REQUEST['controller'])) {
             $controllerName = $_REQUEST['controller'];
+            /** @var GJMAA_Controller $controller */
             $controller = GJMAA::getController($controllerName);
             if (! $controller) {
                 return false;
@@ -467,6 +465,8 @@ class GJMAA
 
             $controller->initAjaxHooks();
         }
+
+        return true;
     }
 
     public static function migrateWidgets()
@@ -561,6 +561,7 @@ class GJMAA
             ]
         ];
 
+        /** @var GJMAA_Service_Woocommerce $wooService */
         $wooService = self::getService('woocommerce');
         $wooCronList = [];
         if ($wooService->isEnabled()) {
@@ -656,5 +657,25 @@ class GJMAA
         }
 
         return $footer_text;
+    }
+
+	/**
+	 * @throws Exception
+	 */
+    public static function checkCompatibility()
+    {
+	    /** @var GJMAA_Helper_Dashboard $helper */
+	    $helper = self::getHelper('dashboard');
+	    if(!$helper->isCompatiblePHPVersion()) {
+	    	echo '<div class="notice notice-error">'.__(sprintf('Your PHP version isn\'t enough for using plugin %s. Minimum requirements is PHP 7.2', __('My auctions allegro', GJMAA_TEXT_DOMAIN)), GJMAA_TEXT_DOMAIN).'</div>';
+		    return false;
+	    }
+
+	    if(!$helper->isCompatibleWordpressVersion()) {
+		    echo '<div class="notice notice-error">'.__(sprintf('Your WordPress version isn\'t enough for using plugin %s. Minimum requirements is v5.0.0',__('My auctions allegro', GJMAA_TEXT_DOMAIN)), GJMAA_TEXT_DOMAIN).'</div>';
+		    return false;
+	    }
+
+	    return true;
     }
 }

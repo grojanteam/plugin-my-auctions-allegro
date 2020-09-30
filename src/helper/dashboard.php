@@ -12,13 +12,13 @@ class GJMAA_Helper_Dashboard {
 	public function isCompatibleWordpressVersion(){
 		$wp_version = $this->getWordPressVersion();
 		
-		return $this->compareVersion($wp_version,'4.0');
+		return $this->compareVersion($wp_version,'5.0');
 	}
 	
 	public function isCompatiblePHPVersion(){
 		$phpVersion = phpversion();
 		
-		return $this->compareVersion($phpVersion, '5.6');
+		return $this->compareVersion($phpVersion, '7.2');
 	}
 	
 	public function getWordPressVersion(){

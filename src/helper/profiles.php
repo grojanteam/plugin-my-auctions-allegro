@@ -12,7 +12,7 @@ class GJMAA_Helper_Profiles
 
     public function getFieldsData($type = 'form')
     {
-        return [
+        $form = [
             'profile_id' => [
                 'type' => 'hidden',
                 'name' => 'profile_id'
@@ -95,44 +95,53 @@ class GJMAA_Helper_Profiles
                 'label' => 'Last synchronization',
                 'disabled' => true,
                 'help' => __('Time of last synchronization',GJMAA_TEXT_DOMAIN)
-            ],
-            'profile_sync_price' => [
-                'type' => 'select',
-                'name' => 'profile_sync_price',
-                'label' => 'Update prices?',
-                'source' => 'yesno',
-                'help' => __('Choose that you want to update auction prices to WooCommerce Product',GJMAA_TEXT_DOMAIN),
-                'disabled' => !GJMAA::getService('woocommerce')->isEnabled(),
-                'value' => 0
-            ],
-            'profile_to_woocommerce' => [
-                'type' => 'select',
-                'name' => 'profile_to_woocommerce',
-                'label' => 'WooCommerce?',
-                'source' => 'yesno',
-                'help' => __('Choose that you want import auctions from allegro to WooCommerce',GJMAA_TEXT_DOMAIN),
-                'disabled' => !GJMAA::getService('woocommerce')->isEnabled()
-            ],
-            'profile_cron_sync' => [
-                'type' => 'select',
-                'name' => 'profile_cron_sync',
-                'label' => 'Sync with CRON',
-                'source' => 'yesno',
-                'help' => __('Choose that you want import auctions from allegro with CRON',GJMAA_TEXT_DOMAIN)
-            ],
-            'profile_clear_auctions' => [
-                'type' => 'select',
-                'name' => 'profile_clear_auctions',
-                'label' => 'Clear auctions',
-                'source' => 'yesno',
-                'help' => __('Clear auctions during every import?')
-            ],
-            'save' => [
-                'type' => 'submit',
-                'name' => 'save',
-                'label' => 'Save'
             ]
         ];
+
+        if(GJMAA::getService('woocommerce')->isEnabled()) {
+            $form += [
+            	'profile_sync_price' => [
+	                'type' => 'select',
+	                'name' => 'profile_sync_price',
+	                'label' => 'Update prices?',
+	                'source' => 'yesno',
+	                'help' => __('Choose that you want to update auction prices to WooCommerce Product',GJMAA_TEXT_DOMAIN),
+	                'value' => 0
+	            ],
+	            'profile_to_woocommerce' => [
+		            'id' => 'profile_to_woocommerce',
+	                'type' => 'select',
+	                'name' => 'profile_to_woocommerce',
+	                'label' => 'WooCommerce?',
+	                'source' => 'yesno',
+	                'help' => __('Choose that you want import auctions from allegro to WooCommerce',GJMAA_TEXT_DOMAIN)
+	            ]
+	        ];
+        }
+
+	    $form += [
+	        'profile_cron_sync' => [
+		        'type' => 'select',
+		        'name' => 'profile_cron_sync',
+		        'label' => 'Sync with CRON',
+		        'source' => 'yesno',
+		        'help' => __('Choose that you want import auctions from allegro with CRON',GJMAA_TEXT_DOMAIN)
+	        ],
+	        'profile_clear_auctions' => [
+		        'type' => 'select',
+		        'name' => 'profile_clear_auctions',
+		        'label' => 'Clear auctions',
+		        'source' => 'yesno',
+		        'help' => __('Clear auctions during every import?')
+	        ],
+	        'save' => [
+		        'type' => 'submit',
+		        'name' => 'save',
+		        'label' => 'Save'
+	        ]
+        ];
+
+        return $form;
     }
 
     public function getTotalProfiles()

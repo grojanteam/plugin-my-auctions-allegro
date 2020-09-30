@@ -1,10 +1,10 @@
 === My auctions allegro ===
 Contributors: grojanteam
 Tags: allegro, wordpress, import, auctions, display, woocommerce, product, category, media
-Requires at least: 4.0
-Tested up to: 5.4.1
-Stable tag: 2.4.4
-Requires PHP: 5.6
+Requires at least: 5.0
+Tested up to: 5.5.0
+Stable tag: 2.5.0
+Requires PHP: 7.2
 Support Link: https://grojanteam.pl/
 Demo Link: https://test.grojanteam.pl/
 Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X8DEMZYH2MT9W
@@ -124,6 +124,9 @@ Please write to your host provider, about task scheduling (CRON), it allow to au
 Please immediately update your plugin to minimum v2.4.0 
 
 == Upgrade Notice ==
+
+= 2.5.0 =
+Stop support older version than PHP 7.2
 
 = 2.4.0 = 
 Very Important Notice for users that use import type "Auctions of user", please update it immediately and go through tips in profile seller ID field!

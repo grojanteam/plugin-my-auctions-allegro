@@ -86,7 +86,9 @@ class GJMAA_Controller_Categories extends GJMAA_Controller
 
         $categories += $options;
 
-        $this->renderSelect($categories, $categoryParentId, $categoryFieldName);
+        $field = $this->renderSelect($categories, $categoryParentId, $categoryFieldName);
+	    echo json_encode(['category_response' => "<th>" . $field . "</td>",'setting_site' => (int) $settingsModel->getData('setting_site')]);
+	    wp_die();
     }
 
     public function initAjaxHooks()
@@ -117,8 +119,7 @@ class GJMAA_Controller_Categories extends GJMAA_Controller
             'value' => $categoryParentId
         ]);
 
-        echo "<th>" . $field->toHtml() . "</td>";
-        wp_die();
+        return $field->toHtml();
     }
 }
 

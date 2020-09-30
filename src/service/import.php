@@ -108,11 +108,11 @@ class GJMAA_Service_Import
 
         if ($this->connect()) {
             $this->makeRequest();
-            $response = $this->sendRequest();
-
-            if ($this->getProfileStep() == 2) {
-                $auctionId = $this->getAuctionIdByProfile();
+	        $auctionId = null;
+	        if ($this->getProfileStep() == 2) {
+	            $auctionId = $this->getAuctionIdByProfile();
             }
+            $response = $this->sendRequest($auctionId);
         } else {
             $import = GJMAA::getService('webapi_import');
             $import->setProfile($this->getProfile());
@@ -126,14 +126,18 @@ class GJMAA_Service_Import
         return $this->parseResponse($response, (isset($auctionId) ? $auctionId : null));
     }
 
-    public function sendRequest()
+    public function sendRequest($auctionId = null)
     {
-        if ($this->getProfileStep() != 2) {
+        if ($this->getSettings()->getData('setting_site') == 1) {
             $this->client->setToken($this->getSettings()
                 ->getData('setting_client_token'));
             $this->client->setSandboxMode($this->getSettings()
                 ->getData('setting_is_sandbox'));
-            return $this->client->execute();
+            $this->client->setAuctionId($auctionId);
+
+            $response = $this->client->execute();
+
+            return $response;
         } else {
             $auctionId = $this->getAuctionIdByProfile();
             return $this->client->getItemAuction($auctionId);
@@ -200,7 +204,9 @@ class GJMAA_Service_Import
     public function getAuctionIdByProfile()
     {
         $first = true;
+	    $profileImportedAuctions = 0;
         do {
+        	/** @var GJMAA_Model_Auctions $auctionsModel */
             $auctionsModel = GJMAA::getModel('auctions');
 
             if($first) {
@@ -209,6 +215,7 @@ class GJMAA_Service_Import
             } else {
                 $profileImportedAuctions++;
             }
+            /** @var GJMAA_Source_Allegro_Offerstatus $gjmaaStatusOffer */
             $gjmaaStatusOffer = GJMAA::getSource('allegro_offerstatus');
 
             $filters = [
@@ -216,8 +223,6 @@ class GJMAA_Service_Import
                 'LIMIT' => 1,
                 'OFFSET' => $profileImportedAuctions
             ];
-            
-            error_log($profileImportedAuctions);
 
             $auction = $auctionsModel->getRowBySearch($filters);
             

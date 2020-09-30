@@ -8,8 +8,9 @@
  * Author URI: https://www.grojanteam.pl
  * Text Domain: my-auctions-allegro-free-edition
  * Domain Path: /lang/
- * WC Requires at least: 4.0
- * WC Tested up to: 5.4.1
+ * Requires PHP: 7.2
+ * WC Requires at least: 5.0.0
+ * WC Tested up to: 5.5.1
  */
 defined('ABSPATH') or die();
 
