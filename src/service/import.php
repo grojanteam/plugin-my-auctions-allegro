@@ -108,11 +108,18 @@ class GJMAA_Service_Import
 
         if ($this->connect()) {
             $this->makeRequest();
-            $response = $this->sendRequest();
-
-            if ($this->getProfileStep() == 2) {
-                $auctionId = $this->getAuctionIdByProfile();
+	        $auctionId = null;
+	        if ($this->getProfileStep() == 2) {
+	        	if($this->getProfile()->getData('profile_type') !== 'my_auctions') {
+	        		$this->getProfile()->setData('profile_to_woocommerce', 0);
+	        		$this->getProfile()->setData('profile_import_step', 1);
+	        		$this->getProfile()->setData('profile_all_auctions', 0);
+	        		$this->getProfile()->save();
+			        throw new Exception(__('Allegro WEB API is not supported anymore. You can\'t collect auctions of other user as WooCommerce Products. Switch your profile to `My auctions` and import only your auctions as WooCommerce Products.', GJMAA_TEXT_DOMAIN));
+		        }
+	            $auctionId = $this->getAuctionIdByProfile();
             }
+            $response = $this->sendRequest($auctionId);
         } else {
             $import = GJMAA::getService('webapi_import');
             $import->setProfile($this->getProfile());
@@ -126,14 +133,21 @@ class GJMAA_Service_Import
         return $this->parseResponse($response, (isset($auctionId) ? $auctionId : null));
     }
 
-    public function sendRequest()
+    public function sendRequest($auctionId = null)
     {
-        if ($this->getProfileStep() != 2) {
+        if ($this->getSettings()->getData('setting_site') == 1) {
             $this->client->setToken($this->getSettings()
                 ->getData('setting_client_token'));
             $this->client->setSandboxMode($this->getSettings()
                 ->getData('setting_is_sandbox'));
-            return $this->client->execute();
+
+            if(method_exists($this->client, 'setAuctionId')) {
+	            $this->client->setAuctionId( $auctionId );
+            }
+
+            $response = $this->client->execute();
+
+            return $response;
         } else {
             $auctionId = $this->getAuctionIdByProfile();
             return $this->client->getItemAuction($auctionId);
@@ -200,7 +214,9 @@ class GJMAA_Service_Import
     public function getAuctionIdByProfile()
     {
         $first = true;
+	    $profileImportedAuctions = 0;
         do {
+        	/** @var GJMAA_Model_Auctions $auctionsModel */
             $auctionsModel = GJMAA::getModel('auctions');
 
             if($first) {
@@ -209,6 +225,7 @@ class GJMAA_Service_Import
             } else {
                 $profileImportedAuctions++;
             }
+            /** @var GJMAA_Source_Allegro_Offerstatus $gjmaaStatusOffer */
             $gjmaaStatusOffer = GJMAA::getSource('allegro_offerstatus');
 
             $filters = [
@@ -216,8 +233,6 @@ class GJMAA_Service_Import
                 'LIMIT' => 1,
                 'OFFSET' => $profileImportedAuctions
             ];
-            
-            error_log($profileImportedAuctions);
 
             $auction = $auctionsModel->getRowBySearch($filters);
             
@@ -299,6 +314,7 @@ class GJMAA_Service_Import
         } else {
             $auctionDetails = $response->arrayItemListInfo->item;
 
+        	/** @var GJMAA_Service_Woocommerce $serviceWooCommerce */
             $serviceWooCommerce = GJMAA::getService('woocommerce');
             $serviceWooCommerce->setSettingId($this->getSettings()
                 ->getId());

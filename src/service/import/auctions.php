@@ -16,17 +16,11 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import
 
     public function makeRequest()
     {
-        if ($this->getProfileStep() != 2) {
-            if (! $this->client) {
-                $api = GJMAA::getLib('rest_api_sale_offers');
+        $api = GJMAA::getLib('rest_api_sale_offers');
 
-                $this->client = $api;
-            }
-            
-            return parent::makeRequest();
-        }
+        $this->client = $api;
 
-        return $this->getAuctionDetails();
+        parent::makeRequest();
     }
 
     public function parseResponse($response,$auctionId = null)
@@ -72,82 +66,71 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import
                 $result = $this->recalculateProgressData($result, $countOfAuctions);
             }
         } else {
-            
-            if(isset($response->arrayItemListInfo->item)) {
-                $auctionDetails = $response->arrayItemListInfo->item;
-                
-                $serviceWooCommerce = GJMAA::getService('woocommerce');
-                $serviceWooCommerce->setSettingId($this->getSettings()->getId());
-                $serviceWooCommerce->saveProducts([
-                    $auctionDetails
-                ]);
-            }
-            
-            $result['auctions'][] = [
-                'auction_id' => $auctionDetails ? $auctionDetails->itemInfo->itId : $auctionId,
-                'auction_profile_id' => $this->getProfile()->getId(),
-                'auction_in_woocommerce' => $auctionDetails ? 1 : 2
-            ];
-            
-            $result['all_auctions'] = $this->getProfile()->getData('profile_all_auctions');
-            $result = $this->recalculateProgressData($result, 1);
-            
-            
-//             $auctionDetails = [];
+             $auctionDetails = [];
 
-//             $product = [];
-//             $product['id'] = $response['id'];
-//             $product['name'] = $response['name'];
-//             $product['description'] = $this->prepareDescription($response['description']);
-//             $product['stock'] = $response['stock']['available'];
-//             $product['status'] = $response['publication']['status'];
-//             $product['images'] = $response['images'];
-//             $product['categories'] = $response['category']['id'];
-//             $product['attributes'] = $response['parameters'];
+             $product = [];
+             $product['id'] = $response['id'];
+             $product['name'] = $response['name'];
+             $product['description'] = $this->prepareDescription($response['description']);
+             $product['stock'] = $response['stock']['available'];
+             $product['status'] = $response['publication']['status'];
+             $product['images'] = $response['images'];
+             $product['categories'] = $response['category']['id'];
+             $product['attributes'] = $response['parameters'];
+             $product['ean'] = $response['ean'];
 
-//             $auctionDetails[] = $product;
+             if(in_array($response['sellingMode']['format'],['BUY_NOW','ADVERTISEMENT'])) {
+             	$product['price'] = $response['sellingMode']['price']['amount'];
+             } else {
+	             $product['price'] = $response['sellingMode']['minimalPrice']['amount'];
+             }
 
-//             $serviceWooCommerce = GJMAA::getService('woocommerce');
-//             $serviceWooCommerce->setSettingId($this->getSettings()
-//                 ->getId());
-//             $serviceWooCommerce->saveProducts([
-//                 $auctionDetails,
-//                 true
-//             ]);
+             $auctionDetails[] = $product;
 
-//             $result['auctions'][] = [
-//                 'auction_id' => $response['id'],
-//                 'auction_profile_id' => $this->getProfile()->getId(),
-//                 'auction_in_woocommerce' => 1
-//             ];
+             /** @var GJMAA_Service_Woocommerce $serviceWooCommerce */
+             $serviceWooCommerce = GJMAA::getService('woocommerce');
+             $serviceWooCommerce->setSettings($this->getSettings());
+             $serviceWooCommerce->setSettingId($this->getSettings()
+                 ->getId());
 
-//             $result['all_auctions'] = $this->getProfile()->getData('profile_all_auctions');
-//             $result = $this->recalculateProgressData($result, 1);
+             $serviceWooCommerce->saveProducts(
+                 $auctionDetails,
+                 true
+             );
+
+	        $result['auctions'][] = [
+		        'auction_id' => $auctionId,
+		        'auction_profile_id' => $this->getProfile()->getId(),
+		        'auction_in_woocommerce' => $auctionId ? 1 : 2
+	        ];
+
+	        $result['all_auctions'] = $this->getProfile()->getData('profile_all_auctions');
+	        $result = $this->recalculateProgressData($result, 1);
         }
 
         return $result;
     }
 
-//     public function prepareDescription($description)
-//     {
-//         $content = '<div>';
+     public function prepareDescription($description)
+     {
+         $content = '<div>';
 
-//         foreach ($description['sections'] as $items) {
-//             $content .= '<div class="row">';
-//             $twoCols = count($items['items']) > 1;
-//             $class = $twoCols ? 'col-6' : 'col-12';
-//             foreach ($items['items'] as $item) {
-//                 $isImage = strtolower($item['type']) == 'image';
+         foreach ($description['sections'] as $items) {
+             $content .= '<div class="row">';
+             $twoCols = count($items['items']) > 1;
+             $class = $twoCols ? 'col-6' : 'col-12';
+             foreach ($items['items'] as $item) {
+                 $isImage = strtolower($item['type']) == 'image';
 
-//                 $content .= '<div class="' . $class . '">' . ($isImage ? '<img src="' . $item['url'] . '" />' : $item['content']) . '</div>';
-//             }
-//             $content .= '</div>';
-//         }
+                 $content .= '<div class="' . $class . '">' . ($isImage ? '<img src="' . $item['url'] . '" />' : $item['content']) . '</div>';
+             }
+             $content .= '</div>';
+         }
 
-//         $content .= '</div>';
+         $content .= '</div>';
 
-//         return $content;
-//     }
+         return $content;
+     }
 }
 
 ?>

@@ -12,13 +12,13 @@ class GJMAA_Helper_Dashboard {
 	public function isCompatibleWordpressVersion(){
 		$wp_version = $this->getWordPressVersion();
 		
-		return $this->compareVersion($wp_version,'4.0');
+		return $this->compareVersion($wp_version,'5.0');
 	}
 	
 	public function isCompatiblePHPVersion(){
 		$phpVersion = phpversion();
 		
-		return $this->compareVersion($phpVersion, '5.6');
+		return $this->compareVersion($phpVersion, '7.2');
 	}
 	
 	public function getWordPressVersion(){
@@ -41,6 +41,36 @@ class GJMAA_Helper_Dashboard {
 	public function getAllProfileErrors(){
 	    $profiles = GJMAA::getModel('profiles');
 	    return $profiles->getAllProfileErrors();
+	}
+
+	public function checkForNotConnectedAccounts()
+	{
+		/** @var GJMAA_Helper_Settings $helper */
+		$helper = GJMAA::getHelper('settings');
+
+		/** @var GJMAA_Model_Settings $model */
+		$model = GJMAA::getModel('settings');
+
+		$ids = $model->getAllIds();
+
+		$notConnected = [];
+
+		foreach($ids as $id) {
+			$model->unsetData();
+			$settings = $model->load($id);
+
+			if($helper->isConnected($settings)) {
+				continue;
+			}
+
+			if($helper->checkWebAPIConnection($settings->getData())) {
+				continue;
+			}
+
+			$notConnected[] = $id;
+		}
+
+		return $notConnected;
 	}
 }
 

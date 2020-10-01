@@ -176,6 +176,8 @@ abstract class GJMAA_Lib_Rest_Api_Abstract
         if ($this->getMethod() == 'PUT') {
             $opts[CURLOPT_CUSTOMREQUEST] = "PUT";
         }
+
+        $opts[CURLOPT_TIMEOUT] = 30;
         
         $ch = curl_init($url);
 

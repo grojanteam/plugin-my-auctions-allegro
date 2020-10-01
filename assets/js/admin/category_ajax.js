@@ -7,11 +7,13 @@
 * @author email l.grochal@grojanteam.pl
 */
 jQuery(document).ready(function($){
-	var category_hidden = $('#category_hidden'),
+	let category_hidden = $('#category_hidden'),
 	setting_id = $('#setting_id'),
 	profile_type = $('#profile_type'),
 	profile_user = $('#profile_user'),
-	profile_search_query = $('#profile_search_query');
+	profile_search_query = $('#profile_search_query'),
+	setting_site = 1,
+	profile_to_woocommerce = $('#profile_to_woocommerce');
 	
     $(document).on('change','#category',function(){    	
     	ajaxLoad();
@@ -30,19 +32,36 @@ jQuery(document).ready(function($){
     	
     	profile_user.attr('disabled',true);
     	profile_search_query.attr('disabled',true);
+		$('#category').attr('disabled', true);
     	profile_user.removeAttr('required');
     	profile_search_query.removeAttr('required');
+		$('#category').removeAttr('required');
+		profile_to_woocommerce.attr('disabled', true);
     	
     	switch(type){
     		case 'search':
     			profile_user.removeAttr('disabled');
     	    	profile_search_query.removeAttr('disabled');
     	    	profile_search_query.attr('required',true);
+    	    	if(setting_site != 1) {
+					$('#category').removeAttr('disabled');
+					profile_to_woocommerce.removeAttr('disabled');
+				}
     			break;
     		case 'auctions_of_user':
     			profile_user.removeAttr('disabled');
     			profile_user.attr('required',true);
+				if(setting_site != 1) {
+					$('#category').removeAttr('disabled');
+					profile_to_woocommerce.removeAttr('disabled');
+				}
     			break;
+			default:
+				if(setting_site != 1) {
+					$('#category').removeAttr('disabled');
+				}
+				profile_to_woocommerce.removeAttr('disabled');
+				break;
     	}
     }
     
@@ -63,7 +82,14 @@ jQuery(document).ready(function($){
     	}
     	
     	$.post(ajaxurl,data,function(response){
-    		$('#category').parent().parent().html(response);
+    		let decoded = $.parseJSON(response);
+
+    		if(!_.isUndefined(decoded) && !_.isUndefined(decoded.category_response)) {
+				$('#category').parent().parent().html(decoded.category_response);
+			}
+
+    		setting_site = decoded.setting_site;
+			checkEnabledFields();
     	});
     }
     

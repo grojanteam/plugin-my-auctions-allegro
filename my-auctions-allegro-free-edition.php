@@ -2,14 +2,15 @@
 /*
  * Plugin Name: My auctions allegro
  * Plugin URI: https://wordpress.org/plugins/my-auctions-allegro-free-edition
- * Version: 2.4.4
+ * Version: 2.5.0
  * Description: Plug-in display auctions from popular polish auction website called allegro.pl, also from 1.7 version you can import basic information from auctions to WooCommerce
  * Author: Grojan Team
  * Author URI: https://www.grojanteam.pl
  * Text Domain: my-auctions-allegro-free-edition
  * Domain Path: /lang/
- * WC Requires at least: 4.0
- * WC Tested up to: 5.4.1
+ * Requires PHP: 7.2
+ * WC Requires at least: 5.0.0
+ * WC Tested up to: 5.5.1
  */
 defined('ABSPATH') or die();
 
