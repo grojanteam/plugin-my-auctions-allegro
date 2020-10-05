@@ -3,7 +3,7 @@ Contributors: grojanteam
 Tags: allegro, wordpress, import, auctions, display, woocommerce, product, category, media
 Requires at least: 5.0
 Tested up to: 5.5.0
-Stable tag: 2.5.0
+Stable tag: 2.5.2
 Requires PHP: 7.2
 Support Link: https://grojanteam.pl/
 Demo Link: https://test.grojanteam.pl/
@@ -125,13 +125,6 @@ Please immediately update your plugin to minimum v2.4.0
 
 == Upgrade Notice ==
 
-= 2.5.0 =
-Stop support older version than PHP 7.2
-Stop support Web API
-More information about lost connections
-Rewrite import to WooCommerce
-EAN as first is taken to connect with WooCommerce Data (if no EAN -> SKU will be as always auction number)
-
 = 2.4.0 = 
 Very Important Notice for users that use import type "Auctions of user", please update it immediately and go through tips in profile seller ID field!
 If you only use import type "My Auctions", you don't need to be afraid.
@@ -149,6 +142,19 @@ Allegro change limit from 25 to 10 (without update, woocommerce import will not 
 Upgrade is needed if you have version 1.6.2 because of problems with aliases, also if you have WooCommerce Store in your WordPress you can use this plugin to import auctions from allegro as product
 
 == Change Log ==
+
+= 2.5.2 =
+- Prevent to not throw error when table exists
+
+= 2.5.1 =
+- Fix import auctions using cron
+
+= 2.5.0 =
+- Stop support older version than PHP 7.2
+- Stop support Web API
+- More information about lost connections
+- Rewrite import to WooCommerce
+- EAN as first is taken to connect with WooCommerce Data (if no EAN -> SKU will be as always auction number)
 
 = 2.4.4 =
 - Optimization related to refresh token

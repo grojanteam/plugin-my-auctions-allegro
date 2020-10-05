@@ -20,6 +20,8 @@ class GJMAA_Service_Import
 
     protected $webapi;
 
+    protected $ids;
+
     const PRICE_BUY_NOW_FORMAT = 'BUY_NOW';
 
     const PRICE_BIDDING_FORMAT = 'AUCTION';
@@ -117,9 +119,12 @@ class GJMAA_Service_Import
 	        		$this->getProfile()->save();
 			        throw new Exception(__('Allegro WEB API is not supported anymore. You can\'t collect auctions of other user as WooCommerce Products. Switch your profile to `My auctions` and import only your auctions as WooCommerce Products.', GJMAA_TEXT_DOMAIN));
 		        }
-	            $auctionId = $this->getAuctionIdByProfile();
+	        	if(!$this->getAuctions()) {
+			        $auctionId = $this->getAuctionIdByProfile();
+			        $this->setAuctions([$auctionId]);
+		        }
             }
-            $response = $this->sendRequest($auctionId);
+            $response = $this->sendRequest();
         } else {
             $import = GJMAA::getService('webapi_import');
             $import->setProfile($this->getProfile());
@@ -133,7 +138,7 @@ class GJMAA_Service_Import
         return $this->parseResponse($response, (isset($auctionId) ? $auctionId : null));
     }
 
-    public function sendRequest($auctionId = null)
+    public function sendRequest()
     {
         if ($this->getSettings()->getData('setting_site') == 1) {
             $this->client->setToken($this->getSettings()
@@ -141,11 +146,19 @@ class GJMAA_Service_Import
             $this->client->setSandboxMode($this->getSettings()
                 ->getData('setting_is_sandbox'));
 
-            if(method_exists($this->client, 'setAuctionId')) {
-	            $this->client->setAuctionId( $auctionId );
+	        $response = [];
+
+            $auctionIds = $this->getAuctions();
+            foreach($auctionIds as $auctionId) {
+	            if ( method_exists( $this->client, 'setAuctionId' ) ) {
+		            $this->client->setAuctionId( $auctionId );
+	            }
+	            $response[$auctionId] = $this->client->execute();
             }
 
-            $response = $this->client->execute();
+            if(empty($response)) {
+	            $response = $this->client->execute();
+            }
 
             return $response;
         } else {
@@ -267,72 +280,86 @@ class GJMAA_Service_Import
         return $result;
     }
 
-    public function parseResponse($response, $auctionId = null)
+    public function parseResponse($response, $auctionId = null) {
+	    $result = [
+		    'auctions'          => [],
+		    'all_auctions'      => $this->getProfile()->getData( 'profile_all_auctions' ) ?: 0,
+		    'imported_auctions' => $this->getProfile()->getData( 'profile_imported_auctions' ) ?: 0,
+		    'progress'          => 100
+	    ];
+
+	    if ( $this->getProfileStep() != 2 ) {
+		    $regular  = $response['items']['regular'];
+		    $promoted = $response['items']['promoted'];
+
+		    $auctions        = array_merge( $regular, $promoted );
+		    $countOfAuctions = count( $auctions );
+
+		    $collection = [];
+
+		    $allegroOfferStatus = GJMAA::getSource( 'allegro_offerstatus' );
+		    if ( $countOfAuctions > 0 ) {
+			    foreach ( $auctions as $auction ) {
+				    $collection[] = [
+					    'auction_id'         => $auction['id'],
+					    'auction_profile_id' => $this->getProfile()->getId(),
+					    'auction_name'       => $auction['name'],
+					    'auction_price'      => $auction['sellingMode']['format'] == self::PRICE_BUY_NOW_FORMAT ? $auction['sellingMode']['price']['amount'] : ( $auction['sellingMode']['format'] == self::PRICE_BIDDING_FORMAT && isset( $auction['sellingMode']['fixedPrice'] ) ? $auction['sellingMode']['fixedPrice']['amount'] : ( $auction['sellingMode']['format'] == self::PRICE_ADVERTISMENT_FORMAT ? $auction['sellingMode']['price']['amount'] : 0 ) ),
+					    'auction_bid_price'  => $auction['sellingMode']['format'] == self::PRICE_BIDDING_FORMAT ? $auction['sellingMode']['price']['amount'] : 0,
+					    'auction_images'     => json_encode( $auction['images'] ),
+					    'auction_seller'     => $auction['seller']['id'],
+					    'auction_categories' => $auction['category']['id'],
+					    'auction_status'     => $allegroOfferStatus::ACTIVE,
+					    'auction_time'       => isset( $auction['publication'] ) ? $auction['publication']['endingAt'] : null,
+					    'auction_quantity'   => $auction['stock']['available']
+				    ];
+			    }
+			    $result['auctions']     = $collection;
+			    $profileAuctions        = $this->getProfile()->getData( 'profile_auctions' );
+			    $allAuctions            = $profileAuctions != 0 && $profileAuctions <= $response['searchMeta']['totalCount'] ? $profileAuctions : ( $response['searchMeta']['totalCount'] > 6000 ? 6000 : $response['searchMeta']['totalCount'] );
+			    $result['all_auctions'] = $allAuctions;
+			    $result                 = $this->recalculateProgressData( $result, $countOfAuctions );
+		    } else {
+			    $result['all_auctions'] = 0;
+			    $result                 = $this->recalculateProgressData( $result, $countOfAuctions );
+		    }
+	    } else {
+		    $auctionDetails = $response->arrayItemListInfo->item;
+
+		    /** @var GJMAA_Service_Woocommerce $serviceWooCommerce */
+		    $serviceWooCommerce = GJMAA::getService( 'woocommerce' );
+		    $serviceWooCommerce->setSettingId( $this->getSettings()
+		                                            ->getId() );
+		    $serviceWooCommerce->saveProducts( [
+			    $auctionDetails
+		    ] );
+
+		    $result['auctions'][] = [
+			    'auction_id'             => $auctionDetails ? $auctionDetails->itemInfo->itId : $auctionId,
+			    'auction_profile_id'     => $this->getProfile()->getId(),
+			    'auction_in_woocommerce' => $auctionDetails ? 1 : 2
+		    ];
+
+		    $result['all_auctions'] = $this->getProfile()->getData( 'profile_all_auctions' );
+		    $result                 = $this->recalculateProgressData( $result, 1 );
+	    }
+
+	    return $result;
+    }
+
+    public function setAuctions($ids)
     {
-        $result = [
-            'auctions' => [],
-            'all_auctions' => $this->getProfile()->getData('profile_all_auctions') ?: 0,
-            'imported_auctions' => $this->getProfile()->getData('profile_imported_auctions') ?: 0,
-            'progress' => 100
-        ];
+    	$this->ids = $ids;
+    }
 
-        if ($this->getProfileStep() != 2) {
-            $regular = $response['items']['regular'];
-            $promoted = $response['items']['promoted'];
+    public function getAuctions()
+    {
+    	return $this->ids;
+    }
 
-            $auctions = array_merge($regular, $promoted);
-            $countOfAuctions = count($auctions);
-
-            $collection = [];
-
-            $allegroOfferStatus = GJMAA::getSource('allegro_offerstatus');
-            if ($countOfAuctions > 0) {
-                foreach ($auctions as $auction) {
-                    $collection[] = [
-                        'auction_id' => $auction['id'],
-                        'auction_profile_id' => $this->getProfile()->getId(),
-                        'auction_name' => $auction['name'],
-                        'auction_price' => $auction['sellingMode']['format'] == self::PRICE_BUY_NOW_FORMAT ? $auction['sellingMode']['price']['amount'] : ($auction['sellingMode']['format'] == self::PRICE_BIDDING_FORMAT && isset($auction['sellingMode']['fixedPrice']) ? $auction['sellingMode']['fixedPrice']['amount'] : ($auction['sellingMode']['format'] == self::PRICE_ADVERTISMENT_FORMAT ? $auction['sellingMode']['price']['amount'] : 0)),
-                        'auction_bid_price' => $auction['sellingMode']['format'] == self::PRICE_BIDDING_FORMAT ? $auction['sellingMode']['price']['amount'] : 0,
-                        'auction_images' => json_encode($auction['images']),
-                        'auction_seller' => $auction['seller']['id'],
-                        'auction_categories' => $auction['category']['id'],
-                        'auction_status' => $allegroOfferStatus::ACTIVE,
-                        'auction_time' => isset($auction['publication']) ? $auction['publication']['endingAt'] : null,
-                        'auction_quantity' => $auction['stock']['available']
-                    ];
-                }
-                $result['auctions'] = $collection;
-                $profileAuctions = $this->getProfile()->getData('profile_auctions');
-                $allAuctions = $profileAuctions != 0 && $profileAuctions <= $response['searchMeta']['totalCount'] ? $profileAuctions : ($response['searchMeta']['totalCount'] > 6000 ? 6000 : $response['searchMeta']['totalCount']);
-                $result['all_auctions'] = $allAuctions;
-                $result = $this->recalculateProgressData($result, $countOfAuctions);
-            } else {
-                $result['all_auctions'] = 0;
-                $result = $this->recalculateProgressData($result, $countOfAuctions);
-            }
-        } else {
-            $auctionDetails = $response->arrayItemListInfo->item;
-
-        	/** @var GJMAA_Service_Woocommerce $serviceWooCommerce */
-            $serviceWooCommerce = GJMAA::getService('woocommerce');
-            $serviceWooCommerce->setSettingId($this->getSettings()
-                ->getId());
-            $serviceWooCommerce->saveProducts([
-                $auctionDetails
-            ]);
-
-            $result['auctions'][] = [
-                'auction_id' => $auctionDetails ? $auctionDetails->itemInfo->itId : $auctionId,
-                'auction_profile_id' => $this->getProfile()->getId(),
-                'auction_in_woocommerce' => $auctionDetails ? 1 : 2
-            ];
-
-            $result['all_auctions'] = $this->getProfile()->getData('profile_all_auctions');
-            $result = $this->recalculateProgressData($result, 1);
-        }
-
-        return $result;
+    public function unsetAuctions()
+    {
+    	$this->ids = [];
     }
 }
 

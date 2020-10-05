@@ -505,6 +505,19 @@ class GJMAA
         $widgetAuctions->register();
     }
 
+    public static function checkForConnections()
+    {
+    	/** @var GJMAA_Helper_Dashboard $helper */
+    	$helper = self::getHelper('dashboard');
+	    if($settingIds = $helper->checkForNotConnectedAccounts()) {
+		    echo '<div class="notice notice-error">';
+		    foreach($settingIds as $settingId) {
+			    echo '<p style="font-size:1.5em;">' . __(sprintf('Please refresh manually connection to <strong>ALLEGRO</strong>. Token is expired <a href="%s" target="_blank">click here</a> and refresh token.', admin_url( 'admin.php?page=gjmaa_settings&action=edit&setting_id='.$settingId)), GJMAA_TEXT_DOMAIN) . '</p>';
+		    }
+		    echo '</div>';
+	    }
+    }
+
     public static function initShortcodes()
     {
         add_shortcode('gjmaa', [
@@ -674,14 +687,6 @@ class GJMAA
 	    if(!$helper->isCompatibleWordpressVersion()) {
 		    echo '<div class="notice notice-error">'.__(sprintf('Your WordPress version isn\'t enough for using plugin %s. Minimum requirements is v5.0.0',__('My auctions allegro', GJMAA_TEXT_DOMAIN)), GJMAA_TEXT_DOMAIN).'</div>';
 		    return false;
-	    }
-
-	    if($settingIds = $helper->checkForNotConnectedAccounts()) {
-	    	echo '<div class="notice notice-error">';
-	    	foreach($settingIds as $settingId) {
-			    echo '<p style="font-size:1.5em;">' . __(sprintf('Please refresh manually connection to <strong>ALLEGRO</strong>. Token is expired <a href="%s" target="_blank">click here</a> and refresh token.', admin_url( 'admin.php?page=gjmaa_settings&action=edit&setting_id='.$settingId)), GJMAA_TEXT_DOMAIN) . '</p>';
-		    }
-	    	echo '</div>';
 	    }
 
 	    return true;

@@ -16,7 +16,8 @@ class GJMAA_Cron_Woocommerce_New
         if (! $wooCommerceService->isEnabled()) {
             return;
         }
-        
+
+        /** @var GJMAA_Model_Profiles $profileModel */
         $profileModel = GJMAA::getModel('profiles');
         $wooCommerceProfileIds = $profileModel->getWooCommerceProfileIds();
         
@@ -52,54 +53,37 @@ class GJMAA_Cron_Woocommerce_New
             $auctionsData[$auction['auction_profile_id']][] = $auction['auction_id'];
         }
         
-        if (count($auctionsData) == 0) {
-            if(!empty($auctionsToSkip)) {
-                $this->saveUpdatedAuctions($auctions, $auctionsToSkip);
-            }
-            return;
-        }
-        
         $profileModel->unsetData();
         
         foreach($auctionsData as $profileId => $auctionIds) {
             $profile = $profileModel->load($profileId);
-            
             if(!$profile->getId()) {
                 continue;
             }
+
+	        if($profile->getData('profile_type') !== 'my_auctions') {
+	        	continue;
+	        }
+
+	        $settings = GJMAA::getModel('settings');
+	        $settings->load($profile->getData('profile_setting_id'));
             
             try {
-                $restApiImport = GJMAA::getService('import');
+            	/** @var GJMAA_Service_Import_Auctions $restApiImport */
+                $restApiImport = GJMAA::getService('import_auctions');
+                $profile->setData('profile_import_step', 2);
                 $restApiImport->setProfile($profile);
-                $isRestConnected = $restApiImport->connect();
-                $webapiImport = null;
-                if ($isRestConnected) {
-                    $webapiImport = $restApiImport->connectToWebAPI();
-                } else {
-                    error_log(__('Problem with connection to REST API',GJMAA_TEXT_DOMAIN));
-                    continue;
-                }
-                
-                $response = $webapiImport->getItemAuction($auctionIds);
-                if ($message = $webapiImport->getError()) {
-                    error_log(sprintf(__('Problem with getting details about auctions: %s',GJMAA_TEXT_DOMAIN)), $message);
-                    continue;
-                }
-                
-                $items = $response->arrayItemListInfo->item;
-                $auctionDetails = is_array($items) ? $items : [
-                    $items
-                ];
-                
-                $serviceWooCommerce = GJMAA::getService('woocommerce');
-                $serviceWooCommerce->setSettingId($profile->getData('profile_setting_id'));
-                $productIds = $serviceWooCommerce->saveProducts($auctionDetails);
+                $restApiImport->setSettings($settings);
+                $restApiImport->setAuctions($auctionIds);
+                $restApiImport->run();
             } catch (Exception $e) {
                 error_log(sprintf(__('Problem with creating products on profile: %s with error %s',GJMAA_TEXT_DOMAIN), $profileId, $e->getMessage()));
             }
         }
-        
-        $this->saveUpdatedAuctions($auctions, $auctionsToSkip, $productIds);
+
+	    if(!empty($auctionsToSkip)) {
+		    $this->saveUpdatedAuctions($auctions, $auctionsToSkip);
+	    }
     }
     
     public function saveUpdatedAuctions($auctions, $auctionsToSkip = [], $productIds = []) {

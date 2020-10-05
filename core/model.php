@@ -46,7 +46,7 @@ class GJMAA_Model
     {
         $tableName = $this->getTable();
         if (! $this->tableExists($tableName)) {
-            $sql = "CREATE TABLE " . $tableName . " (";
+            $sql = "CREATE TABLE IF NOT EXISTS " . $tableName . " (";
             foreach ($columns as $name => $attributes) {
                 $sql .= $name . " " . implode(" ", $attributes['schema']) . ',';
             }

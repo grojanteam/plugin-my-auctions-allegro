@@ -91,7 +91,7 @@ class GJMAA_Service_Woocommerce {
 				continue;
 			}
 
-			$auctionId                = $auction->itemInfo->itId;
+			$auctionId                = $newMethod ? $auction['id'] : $auction->itemInfo->itId;
 			$productId                = $this->addProduct( $auction, $newMethod );
 			$productIds[ $auctionId ] = $productId;
 		}

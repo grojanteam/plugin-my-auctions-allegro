@@ -2,7 +2,7 @@
 /*
  * Plugin Name: My auctions allegro
  * Plugin URI: https://wordpress.org/plugins/my-auctions-allegro-free-edition
- * Version: 2.5.0
+ * Version: 2.5.2
  * Description: Plug-in display auctions from popular polish auction website called allegro.pl, also from 1.7 version you can import basic information from auctions to WooCommerce
  * Author: Grojan Team
  * Author URI: https://www.grojanteam.pl
@@ -25,3 +25,4 @@ register_activation_hook ( __FILE__, ['GJMAA','install'] );
 
 add_action('init',array("GJMAA",'initPlugin'));
 add_action('widgets_init',array('GJMAA','initWidgets'));
+add_action('admin_notices', array('GJMAA','checkForConnections'));
