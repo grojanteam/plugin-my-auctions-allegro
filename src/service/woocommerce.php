@@ -42,6 +42,8 @@ class GJMAA_Service_Woocommerce {
 
 	protected $settings;
 
+	protected $profile;
+
 	protected $oosDecision = [];
 
 	protected $_update = [
@@ -79,6 +81,18 @@ class GJMAA_Service_Woocommerce {
 
 	public function getSettings() {
 		return $this->settings;
+	}
+
+	public function setProfile($profile)
+	{
+		$this->profile = $profile;
+
+		return $this;
+	}
+
+	public function getProfile()
+	{
+		return $this->profile;
 	}
 
 	public function saveProducts( $auctionDetails, $newMethod = false ) {
@@ -156,7 +170,7 @@ class GJMAA_Service_Woocommerce {
 			if ( $post['new'] ) {
 				$this->assignCategories( $categories, $post_id, true );
 				$this->assignMediaProduct( $allegroProduct['id'], $media, $post_id );
-//		        $this->assignAttributes($allegroProduct, $attributes, $post_id, $categories);
+//		        $this->assignAttributes($allegroProduct, $attributes, $post_id, $lastCategoryId);
 			}
 		} else {
 			$categories = $allegroProduct->itemCats->item;
@@ -336,7 +350,7 @@ class GJMAA_Service_Woocommerce {
 
 	public function assignCategories( $categories, $product_id, $newMethod = false ) {
 		$categoriesWooIds = [];
-		$categoriesWooIds = apply_filters( 'gjmaa_service_woocommerce_before_create_categories_filters', $categories );
+		$categoriesWooIds = apply_filters( 'gjmaa_service_woocommerce_before_create_categories_filters', $categories, $newMethod );
 		if ( $categories === $categoriesWooIds || empty( $categoriesWooIds ) ) {
 			$categoriesWooIds = $this->addNewCategories( $categories, $newMethod );
 		}
@@ -349,14 +363,19 @@ class GJMAA_Service_Woocommerce {
 
 		$args = array(
 			'hierarchical'     => 1,
-			'show_option_none' => '',
 			'hide_empty'       => 0,
 			'taxonomy'         => 'product_cat'
 		);
 
 		$index = 0;
+		$wooCommerceCategoryLevel = $this->getProfile()->getData('profile_save_woocommerce_category_level');
 
 		foreach ( $categories as $category ) {
+			if($wooCommerceCategoryLevel > 0) {
+				$wooCommerceCategoryLevel--;
+				continue;
+			}
+
 			if ( ! $newMethod ) {
 				$parent = $category->catLevel > 0 ? $categoriesId[ $category->catLevel - 1 ] : 0;
 				$slug   = sanitize_title( $category->catName );
@@ -369,7 +388,6 @@ class GJMAA_Service_Woocommerce {
 				$level  = $index;
 			}
 
-			$args['slug']   = $slug;
 			$args['parent'] = $parent;
 
 			$terms = get_categories( $args );
@@ -381,7 +399,22 @@ class GJMAA_Service_Woocommerce {
 					'parent'      => $parent
 				] );
 			} else {
-				$term = (array) $terms[0];
+				$found = false;
+				foreach($terms as $_term) {
+					if($_term->slug == $slug) {
+						$term = (array) $_term;
+						$found = true;
+						break;
+					}
+				}
+
+				if(!$found) {
+					$term = wp_insert_term( $name, 'product_cat', [
+						'description' => $name,
+						'slug'        => $slug,
+						'parent'      => $parent
+					] );
+				}
 			}
 
 			$term_id = $term['term_id'];

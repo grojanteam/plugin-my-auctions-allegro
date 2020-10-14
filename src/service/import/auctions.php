@@ -14,7 +14,9 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 	protected $type = 'my_auctions';
 
 	public function makeRequest() {
+		/** @var GJMAA_Lib_Rest_Api_Sale_Offers $api */
 		$api = GJMAA::getLib( 'rest_api_sale_offers' );
+		$api->setCategoryId($this->getProfile()->getData('profile_category'));
 
 		$this->client = $api;
 
@@ -70,7 +72,7 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 					$auctionDetails[] = $this->prepareProduct($singleResponse);
 				}
 			} elseif (is_array($response)) {
-				$auctionDetails[] = $this->prepareProduct( $response[0] );
+				$auctionDetails[] = $this->prepareProduct( $response[$auctionId] );
 			} else {
 				$auctionDetails = $this->prepareProduct($response);
 			}
@@ -80,6 +82,7 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 			$serviceWooCommerce->setSettings( $this->getSettings() );
 			$serviceWooCommerce->setSettingId( $this->getSettings()
 			                                        ->getId() );
+			$serviceWooCommerce->setProfile($this->getProfile());
 
 			$productIds = $serviceWooCommerce->saveProducts(
 				$auctionDetails,

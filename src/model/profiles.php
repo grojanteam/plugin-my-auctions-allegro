@@ -201,7 +201,14 @@ class GJMAA_Model_Profiles extends GJMAA_Model
                 'NULL'
             ],
             'format' => '%s'
-        ]
+        ],
+	    'profile_save_woocommerce_category_level' => [
+	    	'schema' => [
+	    		'INT',
+			    'NULL'
+		    ],
+		    'format' => '%s'
+	    ]
     ];
 
     public function update($currentVersion)
@@ -233,6 +240,10 @@ class GJMAA_Model_Profiles extends GJMAA_Model
         if(version_compare($currentVersion, '2.3.11') < 0) {
             $this->addSyncPriceColumns();
         }
+
+	    if(version_compare($currentVersion, '2.6.0') < 0) {
+		    $this->addSaveWoocommerceCategoryLevelColumn();
+	    }
 
         return $this;
     }
@@ -387,6 +398,14 @@ class GJMAA_Model_Profiles extends GJMAA_Model
             'DATETIME',
             'NULL'
         ], 'profile_sync_status_date');
+    }
+
+    public function addSaveWoocommerceCategoryLevelColumn()
+    {
+	    $this->addColumn($this->getTable(), 'profile_save_woocommerce_category_level', [
+		    'INT',
+		    'NULL'
+	    ], 'profile_error_message');
     }
 }
 

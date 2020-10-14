@@ -57,9 +57,7 @@ jQuery(document).ready(function($){
 				}
     			break;
 			default:
-				if(setting_site != 1) {
-					$('#category').removeAttr('disabled');
-				}
+				$('#category').removeAttr('disabled');
 				profile_to_woocommerce.removeAttr('disabled');
 				break;
     	}

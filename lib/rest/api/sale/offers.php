@@ -61,6 +61,11 @@ class GJMAA_Lib_Rest_Api_Sale_Offers extends GJMAA_Lib_Rest_Api_Abstract
     {
         $this->request['limit'] = $limit;
     }
+
+    public function setCategoryId($categoryId)
+    {
+    	$this->request['category.id'] = $categoryId;
+    }
     
     public function setSort($sort)
     {
