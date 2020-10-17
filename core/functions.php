@@ -223,6 +223,9 @@ class GJMAA
         $allegroCategoryModel = self::getModel('allegro_category');
         $allegroCategoryModel->install();
 
+	    $allegroAttributeModel = self::getModel('allegro_attribute');
+	    $allegroAttributeModel->install();
+
         $pluginDbVersion = get_option('gjmaa_database_version', false);
         if (! $pluginDbVersion) {
             add_option('gjmaa_database_version', self::getVersion());
@@ -245,6 +248,9 @@ class GJMAA
 
         $allegroCategoryModel = self::getModel('allegro_category');
         $allegroCategoryModel->uninstall();
+
+	    $allegroAttributeModel = self::getModel('allegro_attribute');
+	    $allegroAttributeModel->uninstall();
 
         $pluginDbVersion = get_option('gjmaa_database_version', false);
         if ($pluginDbVersion) {
@@ -280,6 +286,9 @@ class GJMAA
 
         $allegroCategoryModel = self::getModel('allegro_category');
         $allegroCategoryModel->update($pluginDbVersion);
+
+	    $allegroAttributeModel = self::getModel('allegro_attribute');
+	    $allegroAttributeModel->update($pluginDbVersion);
 
         if (version_compare($pluginDbVersion, '2.0.0') < 0) {
             self::migrateWidgets();

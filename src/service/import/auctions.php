@@ -16,7 +16,10 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 	public function makeRequest() {
 		/** @var GJMAA_Lib_Rest_Api_Sale_Offers $api */
 		$api = GJMAA::getLib( 'rest_api_sale_offers' );
-		$api->setCategoryId($this->getProfile()->getData('profile_category'));
+		$categoryId = $this->getProfile()->getData('profile_category');
+		if(!empty($categoryId)) {
+			$api->setCategoryId($categoryId);
+		}
 
 		$this->client = $api;
 
@@ -146,7 +149,7 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 		if ( in_array( $response['sellingMode']['format'], [ 'BUY_NOW', 'ADVERTISEMENT' ] ) ) {
 			$product['price'] = $response['sellingMode']['price']['amount'];
 		} else {
-			$product['price'] = $response['sellingMode']['minimalPrice']['amount'];
+			$product['price'] = $response['sellingMode']['minimalPrice']['amount'] ?? $response['saleInfo']['currentPrice']['amount'] ?? $response['sellingMode']['price']['amount'];
 		}
 
 		return $product;

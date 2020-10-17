@@ -27,7 +27,7 @@ class GJMAA_Cron_Woocommerce_New
         
         $filters = [
             'WHERE' => sprintf('auction_profile_id IN (%s) AND ((auction_in_woocommerce IS NULL OR auction_in_woocommerce = 0 OR auction_in_woocommerce = 2) AND auction_status = \'ACTIVE\') AND (auction_time > NOW() OR auction_time IS NULL)', implode(',', $wooCommerceProfileIds)),
-            'LIMIT' => 10
+            'LIMIT' => 100
         ];
         
         $auctionsModel = GJMAA::getModel('auctions');

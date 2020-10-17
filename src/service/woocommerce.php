@@ -167,11 +167,11 @@ class GJMAA_Service_Woocommerce {
 				}
 			}
 
-			if ( $post['new'] ) {
+//			if ( $post['new'] ) {
 				$this->assignCategories( $categories, $post_id, true );
 				$this->assignMediaProduct( $allegroProduct['id'], $media, $post_id );
-//		        $this->assignAttributes($allegroProduct, $attributes, $post_id, $lastCategoryId);
-			}
+		        $this->assignAttributes($allegroProduct, $attributes, $post_id, $lastCategoryId, $newMethod);
+//			}
 		} else {
 			$categories = $allegroProduct->itemCats->item;
 			$attributes = $allegroProduct->itemAttribs->item;
@@ -368,7 +368,7 @@ class GJMAA_Service_Woocommerce {
 		);
 
 		$index = 0;
-		$wooCommerceCategoryLevel = $this->getProfile()->getData('profile_save_woocommerce_category_level');
+		$wooCommerceCategoryLevel = $this->getProfile()->getData('profile_save_woocommerce_category_level') ?? 0;
 
 		foreach ( $categories as $category ) {
 			if($wooCommerceCategoryLevel > 0) {
@@ -471,7 +471,13 @@ class GJMAA_Service_Woocommerce {
 		}
 	}
 
-	public function assignAttributes( $product, $attributes, $product_id, $categories ) {
+	public function assignAttributes( $product, $attributes, $product_id, $category, $newMethod = false) {
+		if($newMethod) {
+			/** @var GJMAA_Source_Allegro_Attribute $allegroAttributeService */
+			$allegroAttributeService = GJMAA::getSource( 'allegro_attribute' );
+			$allegroAttributeDetails = $allegroAttributeService->setSettings( $this->getSettings() )->getOptions( [ 'category_id' => $category ] );
+		}
+
 		$wooCommerceAttributes = [];
 
 		$attributes = is_array( $attributes ) ? $attributes : [
@@ -479,11 +485,36 @@ class GJMAA_Service_Woocommerce {
 		];
 
 		foreach ( $attributes as $attribute ) {
+			if($newMethod) {
+				$attributeId      = (int) $attribute['id'];
+				$allegroAttribute = $allegroAttributeDetails[ $attributeId ];
+				$attributeName = $allegroAttribute['attribute_name'];
+				$attributeValue = null;
+				$index          = sanitize_title($attributeName);
+				switch($allegroAttribute['attribute_type']) {
+					case 'dictionary':
+						$currentValue = $attribute['valuesIds'][0];
+						$attributeOptions = json_decode($allegroAttribute['attribute_dictionary'],true);
+						foreach($attributeOptions as $attribute_option)
+						{
+							if($attribute_option['id'] == $currentValue) {
+								$attributeValue = $attribute_option['value'];
+								break;
+							}
+						}
+						break;
+					default:
+						$attributeValue = $attribute['values'][0];
+						break;
+				}
+			} else {
+				$attributeName  = $attribute->attribName;
+				$values         = $attribute->attribValues->item;
+				$attributeValue = is_array( $values ) ? implode( ',', $values ) : $values;
+				$index          = sanitize_title($attributeName);
+			}
 
-			$attributeName                   = $attribute->attribName;
-			$values                          = $attribute->attribValues->item;
-			$attributeValue                  = is_array( $values ) ? implode( ',', $values ) : $values;
-			$index                           = str_replace( ' ', '_', strtolower( (string) $attributeName ) );
+
 			$wooCommerceAttributes[ $index ] = [
 				'name'        => $attributeName,
 				'value'       => $attributeValue,
@@ -492,7 +523,11 @@ class GJMAA_Service_Woocommerce {
 			];
 		}
 
-		$wooCommerceAttributes = apply_filters( 'gjmaa_service_woocommerce_before_create_attributes_filters', $wooCommerceAttributes, $categories, $product_id );
+		if($newMethod) {
+			$wooCommerceAttributes = apply_filters( 'gjmaa_service_woocommerce_before_create_attributes_filters', $wooCommerceAttributes, $category, $product_id, $allegroAttributeDetails );
+		} else {
+			$wooCommerceAttributes = apply_filters( 'gjmaa_service_woocommerce_before_create_attributes_filters', $wooCommerceAttributes, $category, $product_id);
+		}
 		update_post_meta( $product_id, '_product_attributes', $wooCommerceAttributes );
 	}
 

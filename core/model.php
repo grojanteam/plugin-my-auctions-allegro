@@ -406,4 +406,34 @@ class GJMAA_Model
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }
+
+	public function getRowBySearch($filters, $limit = 25)
+	{
+		$querySelect = "SELECT * FROM " . $this->getTable();
+		$where = '';
+		foreach ($filters as $schema => $value) {
+			$where .= $schema . " " . $value . " ";
+		}
+
+		$querySelect .= " " . $where;
+
+		$row = $this->getWpdb()->get_row($querySelect, ARRAY_A);
+
+		return $row;
+	}
+
+	public function getAllBySearch($filters, $limit = 25)
+	{
+		$querySelect = "SELECT * FROM " . $this->getTable();
+		$where = '';
+		foreach ($filters as $schema => $value) {
+			$where .= $schema . " " . $value . " ";
+		}
+
+		$querySelect .= " " . $where;
+
+		$rows = $this->getWpdb()->get_results($querySelect, ARRAY_A);
+
+		return $rows;
+	}
 }

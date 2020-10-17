@@ -45,6 +45,7 @@ class GJMAA_Controller_Import extends GJMAA_Controller
         $profile->load($profileId);
 
         try {
+        	/** @var GJMAA_Helper_Import $importHelper */
             $importHelper = GJMAA::getHelper('import');
             $response = $importHelper->runImportByProfileId($profileId);
             $response['action'] = 'import_action';
