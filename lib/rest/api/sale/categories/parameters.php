@@ -1,6 +1,6 @@
 <?php
 /**
- * WooCommerce Allegro PRO
+ * My auctions allegro
  * @Author Luke Grochal (Grojan Team)
  * @Author URI https://grojanteam.pl
  */

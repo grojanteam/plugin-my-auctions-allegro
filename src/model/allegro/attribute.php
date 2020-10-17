@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
-
+/**
+ * My auctions allegro
+ * @Author Luke Grochal (Grojan Team)
+ * @Author URI https://grojanteam.pl
+ */
 class GJMAA_Model_Allegro_Attribute extends GJMAA_Model
 {
 	protected $tableName = 'gjmaa_allegro_attributes';
