@@ -207,7 +207,7 @@ class GJMAA_Model_Profiles extends GJMAA_Model
 	    		'INT',
 			    'NULL'
 		    ],
-		    'format' => '%s'
+		    'format' => '%d'
 	    ]
     ];
 
@@ -281,7 +281,7 @@ class GJMAA_Model_Profiles extends GJMAA_Model
 
     public function getWooCommerceProfileIds()
     {
-        $where = "WHERE profile_to_woocommerce = 1 AND profile_type = 'my_auctions'";
+        $where = "WHERE profile_to_woocommerce = 1";
 
         $prepareQuery = "SELECT profile_id FROM {$this->getTable()} {$where}";
 

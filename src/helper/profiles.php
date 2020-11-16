@@ -117,7 +117,7 @@ class GJMAA_Helper_Profiles
 	                'help' => __('Choose that you want import auctions from allegro to WooCommerce',GJMAA_TEXT_DOMAIN)
 	            ],
 	            'profile_save_woocommerce_category_level' => [
-		            'type' => 'text',
+		            'type' => 'number',
 		            'name' => 'profile_save_woocommerce_category_level',
 		            'label' => __('WooCommerce Category Level (0 - 3)'),
 		            'help' => __('Choose from which level category should be saved for product',GJMAA_TEXT_DOMAIN)

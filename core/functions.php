@@ -312,6 +312,7 @@ class GJMAA
 			    'initPluginMenu'
 		    ) );
 
+		    self::addHooks();
 		    self::addTranslations();
 		    self::initStaticAjaxHooks();
 		    self::initShortcodes();
@@ -319,6 +320,11 @@ class GJMAA
 		    self::checkInstallation();
 	    }
     }
+
+	public static function addHooks()
+	{
+		self::getInstance('product', 'Hook');
+	}
     
     public static function checkInstallation()
     {

@@ -150,7 +150,7 @@ class GJMAA_Helper_Import
 
         if (! isset($response['step'])) {
             $response['step'] = 1;
-            $response['all_steps'] = $profile->getData('profile_to_woocommerce') ? 2 : 1;
+            $response['all_steps'] = $profile->getData('profile_to_woocommerce') ? 3 : 1;
         }
 
         $profile->setData('profile_imported_auctions', $response['imported_auctions']);
@@ -162,7 +162,7 @@ class GJMAA_Helper_Import
         if ($response['imported_auctions'] >= $response['all_auctions'] || $response['progress'] == 100) {
             $profile->setData('profile_imported_auctions', 0);
 
-            if (($profile->getData('profile_to_woocommerce') && $profile->getData('profile_import_step') == 2) || ! $profile->getData('profile_to_woocommerce')) {
+            if (($profile->getData('profile_to_woocommerce') && $profile->getData('profile_import_step') == 3) || ! $profile->getData('profile_to_woocommerce')) {
                 $profile->setData('profile_import_step', 1);
                 $profile->setData('profile_last_sync', date('Y-m-d H:i'));
             } elseif ($profile->getData('profile_to_woocommerce') && $profile->getData('profile_import_step') == 1) {
@@ -173,6 +173,14 @@ class GJMAA_Helper_Import
                     $profile->setData('profile_last_sync', date('Y-m-d H:i'));
                     $profile->setData('profile_import_lock', 0);
                 }
+            } elseif ($profile->getData('profile_to_woocommerce') && $profile->getData('profile_import_step') == 2) {
+	            if ($type != 'cron') {
+		            $profile->setData('profile_import_step', 3);
+	            } else {
+		            $profile->setData('profile_import_step', 1);
+		            $profile->setData('profile_last_sync', date('Y-m-d H:i'));
+		            $profile->setData('profile_import_lock', 0);
+	            }
             }
         }
         $profile->setData('profile_error_message', null);

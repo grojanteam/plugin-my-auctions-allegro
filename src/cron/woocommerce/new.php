@@ -12,6 +12,7 @@ class GJMAA_Cron_Woocommerce_New
     
     public function execute()
     {
+    	/** @var GJMAA_Service_Woocommerce $wooCommerceService */
         $wooCommerceService = GJMAA::getService('woocommerce');
         if (! $wooCommerceService->isEnabled()) {
             return;
@@ -61,24 +62,53 @@ class GJMAA_Cron_Woocommerce_New
                 continue;
             }
 
-	        if($profile->getData('profile_type') !== 'my_auctions') {
+            /** @var GJMAA_Model_Settings $settings */
+	        $settings = GJMAA::getModel('settings');
+	        $settings->load($profile->getData('profile_setting_id'));
+
+	        $settingsSite = $settings->getData('setting_site');
+	        if($profile->getData('profile_type') !== 'my_auctions' && $settingsSite == 1) {
 	        	continue;
 	        }
 
-	        $settings = GJMAA::getModel('settings');
-	        $settings->load($profile->getData('profile_setting_id'));
-            
-            try {
-            	/** @var GJMAA_Service_Import_Auctions $restApiImport */
-                $restApiImport = GJMAA::getService('import_auctions');
-                $profile->setData('profile_import_step', 2);
-                $restApiImport->setProfile($profile);
-                $restApiImport->setSettings($settings);
-                $restApiImport->setAuctions($auctionIds);
-                $restApiImport->run();
-            } catch (Exception $e) {
-                error_log(sprintf(__('Problem with creating products on profile: %s with error %s',GJMAA_TEXT_DOMAIN), $profileId, $e->getMessage()));
-            }
+	        try {
+		        if ( $settingsSite == 1 ) {
+			        /** @var GJMAA_Service_Import_Auctions $restApiImport */
+			        $restApiImport = GJMAA::getService( 'import_auctions' );
+			        $profile->setData( 'profile_import_step', 2 );
+			        $restApiImport->setProfile( $profile );
+			        $restApiImport->setSettings( $settings );
+			        $restApiImport->setAuctions( $auctionIds );
+			        $restApiImport->run();
+		        } else {
+		        	/** @var GJMAA_Service_Import $restApiImport */
+			        $restApiImport = GJMAA::getService('import');
+			        $restApiImport->setProfile($profile);
+			        $isRestConnected = $restApiImport->connect();
+			        $webapiImport = null;
+                    if ($isRestConnected) {
+                    	/** @var GJMAA_Lib_Webapi $webapiImport */
+	                    $webapiImport = $restApiImport->connectToWebAPI();
+                    }
+
+			        $response = $webapiImport->getItemAuction($auctionIds);
+                    if ($message = $webapiImport->getError()) {
+                        error_log(sprintf(__('Problem with getting details about auctions: %s',GJMAA_TEXT_DOMAIN)), $message);
+                        continue;
+                    }
+
+                    $items = $response->arrayItemListInfo->item;
+                    $auctionDetails = is_array($items) ? $items : [
+                        $items
+                    ];
+
+			        $wooCommerceService->setSettingId($profile->getData('profile_setting_id'));
+                    $productIds = $wooCommerceService->saveProducts($auctionDetails);
+			        $this->saveUpdatedAuctions($auctions, $auctionsToSkip, $productIds);
+		        }
+	        } catch ( Exception $e ) {
+		        error_log( sprintf( __( 'Problem with creating products on profile: %s with error %s', GJMAA_TEXT_DOMAIN ), $profileId, $e->getMessage() ) );
+	        }
         }
 
 	    if(!empty($auctionsToSkip)) {
@@ -110,4 +140,3 @@ class GJMAA_Cron_Woocommerce_New
         (new self())->execute();
     }
 }
-?>

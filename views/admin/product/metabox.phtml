@@ -1,0 +1,25 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
+<div class="options_group">
+	<?php
+			woocommerce_wp_checkbox(
+				array(
+					'id'      => '_allow_to_show_allegro_link',
+					'value'   => get_post_meta($product_object->get_id(), '_allow_to_show_allegro_link', true) ? 1 : 0,
+					'label'   => __( 'Enable link to allegro', GJMAA_TEXT_DOMAIN ),
+					'cbvalue' => 1,
+				)
+			);
+
+			woocommerce_wp_text_input(
+                [
+                    'id' => '_cta_to_show_allegro_link',
+                    'value' => get_post_meta($product_object->get_id(), '_cta_to_show_allegro_link', true),
+                    'label' => __('CTA allegro link')
+                ]
+            );
+	?>
+</div>

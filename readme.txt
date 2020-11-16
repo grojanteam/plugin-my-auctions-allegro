@@ -3,7 +3,7 @@ Contributors: grojanteam
 Tags: allegro, wordpress, import, auctions, display, woocommerce, product, category, media
 Requires at least: 5.0
 Tested up to: 5.5.0
-Stable tag: 2.6.3
+Stable tag: 2.6.14
 Requires PHP: 7.2
 Support Link: https://grojanteam.pl/
 Demo Link: https://test.grojanteam.pl/
@@ -142,6 +142,42 @@ Allegro change limit from 25 to 10 (without update, woocommerce import will not 
 Upgrade is needed if you have version 1.6.2 because of problems with aliases, also if you have WooCommerce Store in your WordPress you can use this plugin to import auctions from allegro as product
 
 == Change Log ==
+
+= 2.6.14 =
+- fix for import with existing categories
+
+= 2.6.13 =
+- add possibility to use DELETE request on API
+
+= 2.6.12 =
+- fix import attributes
+- possibility to add CTA button for product (link to allegro)
+- fix initialize SOAP client without SOAP extension
+
+= 2.6.11 =
+- type terms to integer
+
+= 2.6.10 =
+- fix creating categories (no more duplicates)
+- fix aukro cron import
+
+= 2.6.9 =
+- fix update auction prices from cron
+
+= 2.6.8 =
+- fix file structures
+
+= 2.6.7 =
+- fix auction prices
+
+= 2.6.6 =
+- fix auction prices
+
+= 2.6.5 =
+- Fixes import for auctions
+
+= 2.6.4 =
+- Fix import attributes
 
 = 2.6.3 =
 - Import attribute amends

@@ -141,9 +141,9 @@ class GJMAA_Helper_Auctions
         ];
     }
 
-    public function getAuctionUrl($auctionId)
+    public function getAuctionUrl($auctionId, $field = 'id')
     {
-        $auction = $this->getAuction($auctionId);
+        $auction = $this->getAuction($auctionId, $field);
 
         if (! $auction->getId()) {
             throw new Exception(__('Auction does not exist', GJMAA_TEXT_DOMAIN));
@@ -162,9 +162,9 @@ class GJMAA_Helper_Auctions
         return sprintf('https://%s/show_item.php?item=%s', $optionSource[$site] . ($isSandbox ? '.allegrosandbox.pl' : ''), $auction->getData('auction_id'));
     }
 
-    public function getAuctionPrice($auctionId)
+    public function getAuctionPrice($auctionId, $field = 'id')
     {
-        $auction = $this->getAuction($auctionId);
+        $auction = $this->getAuction($auctionId, $field);
 
         $site = $this->getSettingSiteId($auction->getData('auction_profile_id'));
 
@@ -181,8 +181,8 @@ class GJMAA_Helper_Auctions
         return (!is_null($bidPrice) ? $bidPrice : $auction->getData('auction_price')) . $currencyOptions[$site];
     }
     
-    public function getAuctionTime($auctionId) {
-        $auction = $this->getAuction($auctionId);
+    public function getAuctionTime($auctionId, $field = 'id') {
+        $auction = $this->getAuction($auctionId, $field);
         
         return $auction->getData('auction_time') ? $this->convertSecondsToHumanTime($auction->getData('auction_time')) : __('No time limit',GJMAA_TEXT_DOMAIN);
     }
@@ -209,11 +209,12 @@ class GJMAA_Helper_Auctions
         return $settings->getData('setting_id');
     }
 
-    public function getAuction($auctionId)
+    public function getAuction($auctionId, $field = 'id')
     {
         if (! isset($this->auctions[$auctionId])) {
+        	/** @var GJMAA_Model_Auctions $auction */
             $auction = GJMAA::getModel('auctions');
-            $this->auctions[$auctionId] = $auction->load($auctionId);
+            $this->auctions[$auctionId] = $auction->load($auctionId, $field);
         }
 
         return $this->auctions[$auctionId];

@@ -14,11 +14,16 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 	protected $type = 'my_auctions';
 
 	public function makeRequest() {
-		/** @var GJMAA_Lib_Rest_Api_Sale_Offers $api */
-		$api = GJMAA::getLib( 'rest_api_sale_offers' );
-		$categoryId = $this->getProfile()->getData('profile_category');
-		if(!empty($categoryId)) {
-			$api->setCategoryId($categoryId);
+		if($this->getProfileStep() == 3) {
+			/** @var GJMAA_Lib_Rest_Api_Sale_Offervariants $api */
+			$api = GJMAA::getLib('rest_api_sale_offervariants');
+		} else {
+			/** @var GJMAA_Lib_Rest_Api_Sale_Offers $api */
+			$api        = GJMAA::getLib( 'rest_api_sale_offers' );
+			$categoryId = $this->getProfile()->getData( 'profile_category' );
+			if ( ! empty( $categoryId ) ) {
+				$api->setCategoryId( $categoryId );
+			}
 		}
 
 		$this->client = $api;
@@ -34,7 +39,7 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 			'progress'          => 100
 		];
 
-		if ( $this->getProfileStep() != 2 ) {
+		if ( $this->getProfileStep() == 1 ) {
 			$auctions = $response['offers'];
 
 			$countOfAuctions = count( $auctions );
@@ -67,7 +72,7 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 				$result['all_auctions'] = 0;
 				$result                 = $this->recalculateProgressData( $result, $countOfAuctions );
 			}
-		} else {
+		} elseif ($this->getProfileStep() == 2) {
 			$auctionDetails = [];
 
 			if ( is_array( $response )  && count($response) > 1) {
@@ -110,6 +115,13 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 			$result                 = $this->recalculateProgressData( $result, 1 );
 
 			$this->unsetAuctions();
+		} elseif ( $this->getProfileStep() == 3 ) {
+			$offerVariants = $response['offerVariants'] ?? false;
+			if($offerVariants) {
+				foreach($offerVariants as $offerVariant) {
+					$this->parseVariantData($offerVariant);
+				}
+			}
 		}
 
 		return $result;
@@ -149,31 +161,56 @@ class GJMAA_Service_Import_Auctions extends GJMAA_Service_Import {
 		if ( in_array( $response['sellingMode']['format'], [ 'BUY_NOW', 'ADVERTISEMENT' ] ) ) {
 			$product['price'] = $response['sellingMode']['price']['amount'];
 		} else {
-			$product['price'] = $response['sellingMode']['minimalPrice']['amount'] ?? $response['saleInfo']['currentPrice']['amount'] ?? $response['sellingMode']['price']['amount'];
+			$startingPrice = (float) ($response['sellingMode']['startingPrice']['amount'] ?? 0);
+			$minimalPrice = (float) ($response['sellingMode']['minimalPrice']['amount'] ?? 0);
+			$currentPrice = (float) ($response['sellingMode']['price']['amount'] ?? 0);
+
+			$product['price'] = $currentPrice > $minimalPrice ? $currentPrice : $minimalPrice > $startingPrice ? $minimalPrice : $startingPrice > 0.00 ? $startingPrice : null;
 		}
 
 		return $product;
 	}
 
 	public function prepareDescription( $description ) {
-		$content = '<div>';
+		$gutenbergBlocks = $images = [];
 
+		$content = '<div>';
 		foreach ( $description['sections'] as $items ) {
 			$content .= '<div class="row">';
 			$twoCols = count( $items['items'] ) > 1;
 			$class   = $twoCols ? 'col-6' : 'col-12';
+			$colNum = 1;
+			$imageCount = 0;
 			foreach ( $items['items'] as $item ) {
 				$isImage = strtolower( $item['type'] ) == 'image';
-
+				if($isImage) {
+					$imageCount++;
+					$images[] = $item['url'];
+				}
 				$content .= '<div class="' . $class . '">' . ( $isImage ? '<img src="' . $item['url'] . '" />' : $item['content'] ) . '</div>';
+
+
 			}
 			$content .= '</div>';
 		}
 
 		$content .= '</div>';
 
-		return $content;
+		return [
+			'description' => $content,
+			'images' => $images
+		];
+	}
+
+	public function parseVariantData($variant)
+	{
+		/** @var GJMAA_Lib_Rest_Api_Sale_Offervariants $api */
+		$api = GJMAA::getLib('rest_api_sale_offervariants');
+		$api->setSetId($variant['id']);
+		$api->setToken($this->getSettings()->getData('setting_client_token'));
+		$api->setSandboxMode($this->getSettings()->getData('setting_is_sandbox'));
+		$result = $api->execute();
+
+		return $result;
 	}
 }
-
-?>

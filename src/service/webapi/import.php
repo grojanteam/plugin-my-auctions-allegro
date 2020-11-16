@@ -203,16 +203,16 @@ class GJMAA_Service_Webapi_Import
     public function recalculateProgressData($result, $count)
     {
         $result['step'] = $this->getProfileStep();
-        $result['all_steps'] = $this->getProfile()->getData('profile_to_woocommerce') ? 2 : 1;
+        $result['all_steps'] = $this->getProfile()->getData('profile_to_woocommerce') ? 3 : 1;
 
         $progress_all = 100;
         if ($result['all_steps'] > 1) {
-            $progress_all = 50;
+            $progress_all = 100 / $result['all_steps'];
         }
 
         $result['imported_auctions'] += $count;
         $result['progress_step'] = number_format(($result['imported_auctions'] / $result['all_auctions']) * 100, 2);
-        $result['progress'] = $progress_all == 100 ? $result['progress_step'] : ($this->getProfileStep() != 2 ? $result['progress_step'] / 2 : number_format($progress_all + ($result['progress_step'] / 2), 2));
+        $result['progress'] = $progress_all == 100 ? $result['progress_step'] : ($this->getProfileStep() == 1 ? $result['progress_step'] / $result['all_steps'] : number_format($progress_all + ($result['progress_step'] / $result['all_steps']), 2));
 
         return $result;
     }

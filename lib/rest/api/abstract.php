@@ -173,8 +173,8 @@ abstract class GJMAA_Lib_Rest_Api_Abstract
 	    $opts[CURLOPT_SSL_VERIFYHOST] = false;
 	    $opts[CURLOPT_SSL_VERIFYPEER] = false;
 
-        if ($this->getMethod() == 'PUT') {
-            $opts[CURLOPT_CUSTOMREQUEST] = "PUT";
+        if (!in_array($this->getMethod(), ['POST', 'GET'])) {
+            $opts[CURLOPT_CUSTOMREQUEST] = $this->getMethod();
         }
 
         $opts[CURLOPT_TIMEOUT] = 30;
@@ -197,6 +197,7 @@ abstract class GJMAA_Lib_Rest_Api_Abstract
         switch ($requestInfo['http_code']) {
             case 200:
             case 201:
+	        case 204:
                 break;
             case 400:
             case 401:

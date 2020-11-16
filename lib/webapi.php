@@ -115,6 +115,10 @@ class GJMAA_Lib_Webapi
             $this->error = true;
             $this->error_mess = $error->getMessage();
             $this->error_code = $error->faultcode;
+        } catch (Throwable $error) {
+	        $this->error = true;
+	        $this->error_mess = $error->getMessage();
+	        $this->error_code = $error->faultcode;
         }
 
         return $this;

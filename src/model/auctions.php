@@ -233,7 +233,7 @@ class GJMAA_Model_Auctions extends GJMAA_Model
         return $this->getWpdb()->get_var('SELECT SUM(IFNULL(auction_visits,0)) FROM ' . $this->getTable()) ?: 0;
     }
 
-    public function getRowBySearch($filters)
+    public function getRowBySearch($filters, $limit = 25)
     {
         $querySelect = "SELECT * FROM " . $this->getTable();
         $where = '';

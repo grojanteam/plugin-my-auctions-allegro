@@ -60,8 +60,8 @@ class GJMAA_Controller_Import extends GJMAA_Controller
         } catch (Exception $e) {
             $this->sendErrorJsonResponse([
                 'all_auctions' => $profile->getData('profile_all_auctions'),
-                'step' => $profile->getData('profile_import_step') ?: ($profile->getData('profile_to_woocommerce') ? 2 : 1),
-                'all_steps' => $profile->getData('profile_to_woocommerce') ? 2 : 1,
+                'step' => $profile->getData('profile_import_step') ?: ($profile->getData('profile_to_woocommerce') ? 3 : 1),
+                'all_steps' => $profile->getData('profile_to_woocommerce') ? 3 : 1,
                 'imported_auctions' => $profile->getData('profile_imported_auctions') ?: 0,
                 'progress' => ($profile->getData('profile_imported_auctions') / ($profile->getData('profile_all_auctions') > 0 ? $profile->getData('profile_all_auctions') : 1) * 100),
                 'error_message' => sprintf(__('Something went wrong: %s', GJMAA_TEXT_DOMAIN), $e->getMessage())

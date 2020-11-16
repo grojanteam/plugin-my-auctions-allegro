@@ -14,7 +14,8 @@ class GJMAA_Cron_Woocommerce_Price
     {
         error_log(sprintf('[%s] Cron run','WOOCOMMERCE PRICE'));
         error_log(sprintf('[%s] Memory %s','WOOCOMMERCE PRICE',$this->convert_filesize(memory_get_usage(true))));
-        
+
+        /** @var GJMAA_Service_Woocommerce $wooCommerceService */
         $wooCommerceService = GJMAA::getService('woocommerce');
         if (! $wooCommerceService->isEnabled()) {
             return;
@@ -56,12 +57,17 @@ class GJMAA_Cron_Woocommerce_Price
             
             $priceUpdateData = [];
             foreach ($auctions as $auction) {
-                if($auction['auction_price'] < 0.0001) {
+	            $auctionPrice = (float) ($auction['auction_price'] ?? 0.0000);
+            	$bidPrice =  (float) ($auction['auction_bid_price'] ?? 0.0000);
+
+            	$productPrice = $bidPrice > $auctionPrice ? $bidPrice : $auctionPrice;
+
+                if($productPrice < 0.0001) {
                     continue;
                 }
                 
                 $priceUpdateData[$auction['auction_id']] = [
-                    'price' => $auction['auction_price'],
+                    'price' => $productPrice,
                     'profile_id' => $auction['auction_profile_id'],
                     'product_id' => $auction['auction_woocommerce_id']
                 ];

@@ -167,11 +167,12 @@ class GJMAA_Service_Woocommerce {
 				}
 			}
 
-//			if ( $post['new'] ) {
-				$this->assignCategories( $categories, $post_id, true );
+			$this->assignCategories( $categories, $post_id, true );
+			$this->assignAttributes($allegroProduct, $attributes, $post_id, $lastCategoryId, $newMethod);
+
+			if ( $post['new'] ) {
 				$this->assignMediaProduct( $allegroProduct['id'], $media, $post_id );
-		        $this->assignAttributes($allegroProduct, $attributes, $post_id, $lastCategoryId, $newMethod);
-//			}
+			}
 		} else {
 			$categories = $allegroProduct->itemCats->item;
 			$attributes = $allegroProduct->itemAttribs->item;
@@ -355,20 +356,21 @@ class GJMAA_Service_Woocommerce {
 			$categoriesWooIds = $this->addNewCategories( $categories, $newMethod );
 		}
 
-		wp_set_object_terms( $product_id, $categoriesWooIds, 'product_cat' );
+		do_action('gjmaa_service_woocommerce_after_create_categories', $categoriesWooIds['map_woocommerce_category_ids']);
+
+		wp_set_object_terms( $product_id, $categoriesWooIds['woocommerce_category_ids'], 'product_cat');
 	}
 
 	public function addNewCategories( $categories, $newMethod = false ) {
 		$categoriesId = [];
 
 		$args = array(
-			'hierarchical'     => 1,
-			'hide_empty'       => 0,
 			'taxonomy'         => 'product_cat'
 		);
 
 		$index = 0;
 		$wooCommerceCategoryLevel = $this->getProfile()->getData('profile_save_woocommerce_category_level') ?? 0;
+		$map = [];
 
 		foreach ( $categories as $category ) {
 			if($wooCommerceCategoryLevel > 0) {
@@ -377,11 +379,13 @@ class GJMAA_Service_Woocommerce {
 			}
 
 			if ( ! $newMethod ) {
+				$allegroCategoryId = $category->catId;
 				$parent = $category->catLevel > 0 ? $categoriesId[ $category->catLevel - 1 ] : 0;
 				$slug   = sanitize_title( $category->catName );
 				$name   = $category->catName;
 				$level  = $category->catLevel;
 			} else {
+				$allegroCategoryId = $category['category_id'];
 				$parent = $index > 0 ? $categoriesId[ $index - 1 ] : 0;
 				$slug   = sanitize_title( $category['name'] );
 				$name   = $category['name'];
@@ -389,43 +393,48 @@ class GJMAA_Service_Woocommerce {
 			}
 
 			$args['parent'] = $parent;
+			$args['description'] = $name;
 
-			$terms = get_categories( $args );
+			$term = $this->getWooCommerceProductCategory( $args );
 
-			if ( empty( $terms ) ) {
-				$term = wp_insert_term( $name, 'product_cat', [
+			if ( empty( $term ) ) {
+				$term = wp_insert_term($name, 'product_cat', [
 					'description' => $name,
-					'slug'        => $slug,
-					'parent'      => $parent
-				] );
-			} else {
-				$found = false;
-				foreach($terms as $_term) {
-					if($_term->slug == $slug) {
-						$term = (array) $_term;
-						$found = true;
-						break;
-					}
-				}
+					'slug' => $slug,
+					'parent' => $parent
+				]);
 
-				if(!$found) {
-					$term = wp_insert_term( $name, 'product_cat', [
-						'description' => $name,
-						'slug'        => $slug,
-						'parent'      => $parent
-					] );
+				if ( is_wp_error( $term ) ) {
+					$term_id = $term->error_data['term_exists'] ?? null;
+				} else {
+					$term_id = $term['term_id'];
 				}
+			} else {
+				$term_id = $term['term_id'];
 			}
 
-			$term_id = $term['term_id'];
-
 			if ( null !== $term_id ) {
-				$categoriesId[ $level ] = $term_id;
+				$categoriesId[ $level ] = (int) $term_id;
+				$map[$term_id] = $allegroCategoryId;
 			}
 			$index ++;
 		}
 
-		return $categoriesId;
+		return [
+			'woocommerce_category_ids' => $categoriesId,
+			'map_woocommerce_category_ids' => $map
+		];
+	}
+
+	private function getWooCommerceProductCategory(array $args)
+	{
+		global $wpdb;
+
+		$termTaxonomyTable = sprintf('%s%s', $wpdb->prefix, 'term_taxonomy');
+
+		$query = "SELECT term_id FROM %s WHERE taxonomy='%s' AND parent=%d AND description='%s'";
+
+		return $wpdb->get_row(sprintf($query, $termTaxonomyTable, $args['taxonomy'], $args['parent'], $args['description']), ARRAY_A);
 	}
 
 	public function assignMediaProduct( $auctionId, $media, $product_id, $newMethod = false ) {
@@ -487,37 +496,63 @@ class GJMAA_Service_Woocommerce {
 		foreach ( $attributes as $attribute ) {
 			if($newMethod) {
 				$attributeId      = (int) $attribute['id'];
-				$allegroAttribute = $allegroAttributeDetails[ $attributeId ];
+				$allegroAttribute = $allegroAttributeDetails[ $attributeId ] ?? false;
+				if(!$allegroAttribute) { continue; }
 				$attributeName = $allegroAttribute['attribute_name'];
 				$attributeValue = null;
 				$index          = sanitize_title($attributeName);
+				$allegroAttributeOptions = null;
+				$attributeRestrictions = json_decode($allegroAttribute['attribute_restrictions'],true);
+				$multipleChoices = $attributeRestrictions['multipleChoices'] ?? false;
 				switch($allegroAttribute['attribute_type']) {
 					case 'dictionary':
-						$currentValue = $attribute['valuesIds'][0];
+						$isDictionary = true;
+						$currentValue = $multipleChoices ? $attribute['valuesIds'] : $attribute['valuesIds'][0];
 						$attributeOptions = json_decode($allegroAttribute['attribute_dictionary'],true);
+						$attributeValue = [];
+						$allegroAttributeOptions = [];
 						foreach($attributeOptions as $attribute_option)
 						{
-							if($attribute_option['id'] == $currentValue) {
-								$attributeValue = $attribute_option['value'];
-								break;
+							if(!is_array($currentValue)) {
+								if ( $attribute_option['id'] == $currentValue ) {
+									$attributeValue = $attribute_option['value'];
+									$allegroAttributeOptions[$attribute_option['value']] = $currentValue;
+									break;
+								}
+							} else {
+								foreach($currentValue as $currentAllegroValue)
+								{
+									if($attribute_option['id'] == $currentAllegroValue) {
+										$attributeValue[] = $attribute_option['value'];
+										$allegroAttributeOptions[$attribute_option['value']] = $currentAllegroValue;
+										break;
+									}
+								}
 							}
 						}
 						break;
 					default:
+						$isDictionary = false;
 						$attributeValue = $attribute['values'][0];
 						break;
 				}
 			} else {
+				$attributeId    = null;
+				$allegroAttributeOptions = [];
 				$attributeName  = $attribute->attribName;
 				$values         = $attribute->attribValues->item;
 				$attributeValue = is_array( $values ) ? implode( ',', $values ) : $values;
 				$index          = sanitize_title($attributeName);
+				$isDictionary = false;
 			}
 
 
 			$wooCommerceAttributes[ $index ] = [
 				'name'        => $attributeName,
-				'value'       => $attributeValue,
+				'value'       => is_array($attributeValue) ? implode(',' , $attributeValue) : $attributeValue,
+				'allegro_attribute_id' => $attributeId,
+				'allegro_attribute_option_ids' => $allegroAttributeOptions,
+				'is_dictionary' => $isDictionary,
 				'is_visible'  => 1,
 				'is_taxonomy' => 0
 			];
